@@ -38,13 +38,16 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       });
 
       // Update badge based on verdict
-      const verdict = (data.verdict || "UNKNOWN").toUpperCase();
-      if (verdict.includes("FALSE") || verdict.includes("HOAX")) {
+      const verdict = (data.overall_verdict || data.verdict || "UNKNOWN").toUpperCase();
+      if (verdict.includes("FALSE") || verdict.includes("HOAX") || verdict.includes("FABRICATED")) {
         chrome.action.setBadgeText({ text: "HOAX" });
         chrome.action.setBadgeBackgroundColor({ color: "#ef4444" }); // Red
-      } else if (verdict.includes("VERIFIED") || verdict.includes("TRUE")) {
+      } else if (verdict.includes("VERIFIED") || verdict.includes("TRUE") || verdict.includes("AUTHENTIC")) {
         chrome.action.setBadgeText({ text: "TRUE" });
         chrome.action.setBadgeBackgroundColor({ color: "#10b981" }); // Green
+      } else if (verdict.includes("SUSPICIOUS") || verdict.includes("UNVERIFIED")) {
+        chrome.action.setBadgeText({ text: "WARN" });
+        chrome.action.setBadgeBackgroundColor({ color: "#f59e0b" }); // Amber
       } else {
         chrome.action.setBadgeText({ text: "?" });
         chrome.action.setBadgeBackgroundColor({ color: "#6b7280" }); // Gray

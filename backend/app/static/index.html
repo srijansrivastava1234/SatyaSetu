@@ -268,7 +268,7 @@
       </div>
 
       <div id="pane-text">
-        <textarea id="claim-text" rows="4" placeholder="Paste suspicious WhatsApp forward, viral message, or claim text here..." style="width:100%; padding:14px 18px; font-size:0.95rem; line-height:1.6; resize:vertical;"></textarea>
+        <textarea id="claim-text" oninput="onUserInput()" rows="4" placeholder="Paste suspicious WhatsApp forward, viral message, or claim text here..." style="width:100%; padding:14px 18px; font-size:0.95rem; line-height:1.6; resize:vertical;"></textarea>
       </div>
 
       <div id="pane-image" style="display:none; border:2px dashed var(--border-color); border-radius:var(--radius-md); padding:30px; text-align:center; background:rgba(10,15,26,0.4);">
@@ -288,7 +288,7 @@
       </div>
 
       <div id="pane-url" style="display:none;">
-        <input type="url" id="claim-url" placeholder="https://twitter.com/... or https://news.com/article..." style="width:100%; padding:14px 18px; font-size:0.95rem;">
+        <input type="url" id="claim-url" oninput="onUserInput()" placeholder="https://twitter.com/... or https://news.com/article..." style="width:100%; padding:14px 18px; font-size:0.95rem;">
       </div>
 
       <div style="display:flex; align-items:center; justify-content:space-between; margin-top:16px;">
@@ -609,6 +609,13 @@
     let activeLang = 'en';
     let userApiKey = localStorage.getItem('SATYA_GEMINI_KEY') || '';
 
+    const SCENARIO_TEXTS = {
+      'unesco-anthem': "Great news for every proud Indian! 🇮🇳 UNESCO has just officially announced that 'Jana Gana Mana' has been declared the BEST NATIONAL ANTHEM in the world! No other country's anthem got this honour. Please forward this message to at least 10 people and all your groups right now to show your patriotism! Jai Hind! Vande Mataram!",
+      'rbi-500-note': "WARNING! Check your ₹500 notes immediately! If the green security strip is closer to Mahatma Gandhi's photo instead of RBI Governor's signature, it is 100% FAKE! Share this alert with all your family groups before you lose money!",
+      'salt-shortage': "URGENT ALERT: Severe salt shortage across Delhi and Bihar! Salt prices have jumped from ₹20 to ₹400 per kg today. Markets are running out. Go buy 10 packets immediately before all grocery stores shut down tonight!",
+      'cbse-exam-circular': "CBSE Board Examination 2026: Official notification and date sheet for Class 10 and 12 published. Candidates can download official circular from cbse.gov.in."
+    };
+
     function toggleKeyModal() {
       const modal = document.getElementById('key-modal');
       modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
@@ -628,8 +635,15 @@
       setTimeout(() => t.style.display = 'none', 3000);
     }
 
+    function onUserInput() {
+      selectedScenarioId = null;
+    }
+
     function setTab(tab) {
       activeTab = tab;
+      if (tab !== 'text') {
+        selectedScenarioId = null;
+      }
       ['text', 'image', 'url'].forEach(t => {
         document.getElementById(`pane-${t}`).style.display = t === tab ? 'block' : 'none';
         const btn = document.getElementById(`tab-${t}`);
@@ -647,6 +661,7 @@
 
     let imageBase64Data = '';
     function handleImage(e) {
+      selectedScenarioId = null;
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
@@ -665,6 +680,7 @@
       document.getElementById('img-file').value = '';
       document.getElementById('image-empty').style.display = 'block';
       document.getElementById('image-preview-container').style.display = 'none';
+      selectedScenarioId = null;
     }
 
     function focusInput() {
@@ -688,6 +704,9 @@
 
     async function selectScenario(scenarioId) {
       selectedScenarioId = scenarioId;
+      setTab('text');
+      const sampleText = SCENARIO_TEXTS[scenarioId] || '';
+      document.getElementById('claim-text').value = sampleText;
       await executeVerify();
     }
 
@@ -697,10 +716,43 @@
       btn.disabled = true;
       document.title = "SatyaSetu — ⏳ Verifying Claim...";
 
+      const textVal = (document.getElementById('claim-text').value || '').trim();
+      const urlVal = (document.getElementById('claim-url').value || '').trim();
+
+      // Check if user has entered custom text or modified the preset
+      if (activeTab === 'text') {
+        if (!textVal) {
+          alert('Please enter a claim, forward, or headline to verify.');
+          btn.innerHTML = '✨ Verify Authenticity & Dissect Manipulation';
+          btn.disabled = false;
+          document.title = "SatyaSetu — AI Misinformation & Fact-Checking Engine";
+          return;
+        }
+        if (selectedScenarioId && SCENARIO_TEXTS[selectedScenarioId] !== textVal) {
+          selectedScenarioId = null;
+        }
+      } else if (activeTab === 'url') {
+        if (!urlVal) {
+          alert('Please enter a URL to verify.');
+          btn.innerHTML = '✨ Verify Authenticity & Dissect Manipulation';
+          btn.disabled = false;
+          return;
+        }
+        selectedScenarioId = null;
+      } else if (activeTab === 'image') {
+        if (!imageBase64Data) {
+          alert('Please upload an image screenshot to verify.');
+          btn.innerHTML = '✨ Verify Authenticity & Dissect Manipulation';
+          btn.disabled = false;
+          return;
+        }
+        selectedScenarioId = null;
+      }
+
       const payload = {
         scenario_id: selectedScenarioId || undefined,
-        text: activeTab === 'text' ? document.getElementById('claim-text').value : undefined,
-        url: activeTab === 'url' ? document.getElementById('claim-url').value : undefined,
+        text: activeTab === 'text' ? textVal : undefined,
+        url: activeTab === 'url' ? urlVal : undefined,
         image_base64: activeTab === 'image' ? imageBase64Data : undefined,
         api_key_override: userApiKey || undefined
       };
@@ -750,7 +802,7 @@
 
       // Verdict styling
       const isFalse = res.overall_verdict.includes('FALSE') || res.overall_verdict.includes('FABRICATED') || res.overall_verdict.includes('HOAX');
-      const isTrue = res.overall_verdict.includes('TRUE') || res.overall_verdict.includes('AUTHENTIC');
+      const isTrue = res.overall_verdict.includes('TRUE') || res.overall_verdict.includes('AUTHENTIC') || res.overall_verdict.includes('VERIFIED');
       const col = isFalse ? '#ef4444' : isTrue ? '#10b981' : '#f59e0b';
       const bg = isFalse ? 'rgba(239,68,68,0.12)' : isTrue ? 'rgba(16,185,129,0.12)' : 'rgba(245,158,11,0.12)';
 

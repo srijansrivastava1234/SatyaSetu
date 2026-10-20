@@ -16,20 +16,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     const res = item.result || {};
     
     queryText.innerText = item.query ? `"${item.query}"` : "No recent query.";
-    explanationText.innerText = res.explanation || res.summary || "Verification complete.";
+    explanationText.innerText = res.debunk_summary_en || res.explanation || res.summary || "Verification complete.";
 
-    const verdict = (res.verdict || "UNVERIFIED").toUpperCase();
+    const verdict = (res.overall_verdict || res.verdict || "UNVERIFIED").toUpperCase();
     verdictBadge.innerText = verdict;
 
-    if (verdict.includes("FALSE") || verdict.includes("HOAX")) {
+    if (verdict.includes("FALSE") || verdict.includes("HOAX") || verdict.includes("FABRICATED")) {
       verdictBadge.className = "badge badge-false";
-    } else if (verdict.includes("VERIFIED") || verdict.includes("TRUE")) {
+    } else if (verdict.includes("VERIFIED") || verdict.includes("TRUE") || verdict.includes("AUTHENTIC")) {
       verdictBadge.className = "badge badge-true";
+    } else if (verdict.includes("SUSPICIOUS")) {
+      verdictBadge.className = "badge badge-warning";
     } else {
       verdictBadge.className = "badge badge-pending";
     }
 
-    debunkMessage = `🚨 *SatyaSetu Fact-Check Alert* 🚨\n\n*Claim*: "${item.query}"\n*Verdict*: ${verdict}\n*Analysis*: ${explanationText.innerText}\n\n*Verified via certified IFCN sources.* Please verify before forwarding!`;
+    if (res.shareable_card && res.shareable_card.whatsapp_format_text_en) {
+      debunkMessage = res.shareable_card.whatsapp_format_text_en;
+    } else {
+      debunkMessage = `🚨 *SatyaSetu Fact-Check Alert* 🚨\n\n*Claim*: "${item.query}"\n*Verdict*: ${verdict}\n*Analysis*: ${explanationText.innerText}\n\n*Verified via SatyaSetu TrustAI Engine.*`;
+    }
   }
 
   copyBtn.addEventListener("click", () => {

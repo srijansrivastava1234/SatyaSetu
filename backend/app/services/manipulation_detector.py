@@ -21,6 +21,18 @@ EMOTIONAL_ANGER_FEAR_PATTERNS = [
     r"threat", r"deadly", r"riot", r"धोखा", r"साजिश", r"खतरा", r"जहर", r"हमला", r"दंगा"
 ]
 
+SCAM_PHISHING_PATTERNS = [
+    r"loan.*without collateral", r"disconnected tonight", r"electricity bill unpaid",
+    r"chargeable.*monday", r"send.*to \d+ contacts", r"won \d+ lakh", r"lottery",
+    r"update bank account", r"call.*immediately at \d{10}", r"govt-free-.*\.in",
+    r"\.(xyz|top|link|tk|ml|ga|cf|gq)\b", r"shut down all private bank"
+]
+
+SUBJECTIVE_OPINION_PATTERNS = [
+    r"spiritually", r"less stressful", r"healthier than", r"in my opinion",
+    r"personally believe", r"better place to live", r"philosophically"
+]
+
 def analyze_manipulation_tactics(text: str) -> ManipulationSignals:
     if not text:
         return ManipulationSignals(
@@ -82,6 +94,23 @@ def analyze_manipulation_tactics(text: str) -> ManipulationSignals:
     if matched_fear:
         detected_tactics.append("Fear-Mongering & Outrage Bait")
 
+    # 4b. Phishing & Advance Fee Scam Vector
+    matched_scam = []
+    for pattern in SCAM_PHISHING_PATTERNS:
+        if re.search(pattern, lower_text):
+            matched_scam.append(pattern)
+    if matched_scam:
+        detected_tactics.append("Financial / Phishing Deception Vector")
+        urgency_points += 35
+
+    # 4c. Subjective Opinion Detection
+    matched_opinion = []
+    for pattern in SUBJECTIVE_OPINION_PATTERNS:
+        if re.search(pattern, lower_text):
+            matched_opinion.append(pattern)
+    if matched_opinion:
+        detected_tactics.append("Subjective Qualitative Opinion (Non-Falsifiable)")
+
     # 5. Missing Elements of Trustworthy Journalism
     has_date = bool(re.search(r"\b(202[0-9]|january|february|march|april|may|june|july|august|september|october|november|december|\d{1,2}[/-]\d{1,2}[/-]\d{2,4})\b", lower_text))
     has_hyperlink = bool(re.search(r"https?://", text))
@@ -109,7 +138,7 @@ def analyze_manipulation_tactics(text: str) -> ManipulationSignals:
         emotional_intensity=emotional_intensity,
         sensationalism_score=sensationalism_score,
         credibility_index=credibility_index,
-        detected_tactics=detected_tactics or ["Standard descriptive tone"],
-        linguistic_markers=linguistic_markers or ["Neutral syntax"],
-        missing_elements=missing_elements or ["Standard verifiable attributes present"]
+        detected_tactics=detected_tactics,
+        linguistic_markers=linguistic_markers,
+        missing_elements=missing_elements
     )

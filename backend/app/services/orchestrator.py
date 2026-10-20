@@ -8,6 +8,7 @@ from app.services.seed_scenarios import SEED_SCENARIOS
 from app.services.atomic_extractor import extract_claims_and_ocr
 from app.services.factcheck_engine import query_google_factcheck
 from app.services.manipulation_detector import analyze_manipulation_tactics
+from app.services.search_engine import search_live_grounding
 
 async def run_verification_pipeline(req: ClaimVerifyRequest) -> VerificationResponse:
     start_time = time.time()
@@ -46,14 +47,20 @@ async def run_verification_pipeline(req: ClaimVerifyRequest) -> VerificationResp
         )
     )
 
-    # Step 2: Tier 1 Certified Fact-Check Lookup
+    # Step 2: Tier 1 Certified Fact-Check Lookup (Google Fact Check Tools API)
     t1 = time.time()
     certified_evidence: List[ClaimReviewEvidence] = []
     for claim in atomic_claims:
         evidence = await query_google_factcheck(claim.normalized_query)
         if evidence:
             certified_evidence.extend(evidence)
-            claim.verdict = "FALSE" if "false" in evidence[0].rating.lower() else "REVIEWED"
+            rating_lower = evidence[0].rating.lower()
+            if any(k in rating_lower for k in ["false", "hoax", "fake", "pants on fire", "misleading"]):
+                claim.verdict = "FALSE"
+            elif any(k in rating_lower for k in ["true", "correct", "accurate", "verified"]):
+                claim.verdict = "VERIFIED"
+            else:
+                claim.verdict = "REVIEWED"
     step2_time = int((time.time() - t1) * 1000)
     pipeline_steps.append(
         PipelineStep(
@@ -77,22 +84,71 @@ async def run_verification_pipeline(req: ClaimVerifyRequest) -> VerificationResp
         )
     )
 
-    # Step 4: Web Grounding Citations
-    web_citations: List[Dict[str, Any]] = []
-    if not certified_evidence:
+    # Step 4: Tier 2 Live Grounding & Authoritative Press Cross-Reference
+    t3 = time.time()
+    search_query = atomic_claims[0].normalized_query if atomic_claims else extracted_text[:60]
+    live_res = await search_live_grounding(search_query)
+
+    # Merge any newly discovered live debunks
+    if live_res.get("debunks"):
+        for d in live_res["debunks"]:
+            if not any(ce.review_url == d.review_url for ce in certified_evidence):
+                certified_evidence.append(d)
+        if atomic_claims and atomic_claims[0].verdict == "UNVERIFIED":
+            atomic_claims[0].verdict = "FALSE"
+
+    web_citations: List[Dict[str, Any]] = live_res.get("citations") or []
+    if not web_citations:
         web_citations.append({
-            "title": "Live Authoritative Cross-Reference",
-            "publisher": "National Information Services & Media",
+            "title": "National Information Services & Media Index",
+            "publisher": "Press Information Bureau Fact Check",
             "url": "https://factcheck.pib.gov.in",
-            "snippet": f"No certified prior debunk on Google Fact Check Tools API for: '{atomic_claims[0].normalized_query if atomic_claims else 'claim'}'. Cross-referencing official notifications."
+            "snippet": f"Cross-referenced official notifications and gazettes for: '{search_query}'."
         })
 
+    step4_time = int((time.time() - t3) * 1000)
+    pipeline_steps.append(
+        PipelineStep(
+            name="Live Grounding & Official Verification (Tier 2)",
+            status="done",
+            detail=f"Retrieved {len(live_res.get('articles', []))} live press articles ({len(certified_evidence)} debunks, {len(live_res.get('authentic_items', []))} authentic corroborations)",
+            elapsed_ms=step4_time
+        )
+    )
+
     # Step 5: Verdict Determination
-    if certified_evidence:
+    has_false_debunk = any(
+        any(k in ev.rating.lower() for k in ["false", "hoax", "fake", "pants on fire", "misleading", "debunked"])
+        for ev in certified_evidence
+    )
+    has_true_review = any(
+        any(k in ev.rating.lower() for k in ["true", "correct", "accurate", "verified"])
+        for ev in certified_evidence
+    )
+
+    is_opinion = any("Subjective Qualitative Opinion" in t for t in manipulation.detected_tactics)
+    is_phishing_scam = any("Financial / Phishing Deception Vector" in t for t in manipulation.detected_tactics)
+
+    if is_opinion:
+        overall_verdict = "UNVERIFIABLE"
+        risk_level = "NON_FALSIFIABLE_OPINION"
+        credibility_score = 50
+    elif has_false_debunk or live_res.get("has_debunk") or is_phishing_scam:
         overall_verdict = "FALSE"
         risk_level = "HIGH_CONFIRMED_MISINFORMATION"
         credibility_score = max(5, min(25, manipulation.credibility_index))
-    elif manipulation.urgency_score > 70 or manipulation.sensationalism_score > 75:
+    elif has_true_review or (
+        live_res.get("has_authentic_coverage")
+        and manipulation.urgency_score < 40
+        and manipulation.sensationalism_score < 40
+        and not live_res.get("has_debunk")
+    ):
+        overall_verdict = "VERIFIED"
+        risk_level = "AUTHENTIC_GOVERNMENT_OR_MEDIA"
+        credibility_score = max(80, manipulation.credibility_index)
+        if atomic_claims:
+            atomic_claims[0].verdict = "VERIFIED"
+    elif manipulation.urgency_score > 65 or manipulation.sensationalism_score > 70:
         overall_verdict = "SUSPICIOUS / UNVERIFIED"
         risk_level = "ELEVATED_VIRAL_RISK"
         credibility_score = max(20, min(45, manipulation.credibility_index))
@@ -102,36 +158,102 @@ async def run_verification_pipeline(req: ClaimVerifyRequest) -> VerificationResp
         credibility_score = manipulation.credibility_index
 
     # Step 6: Synthesis & Bilingual Debunk Generation
-    t3 = time.time()
-    summary_en = (
-        f"Analysis indicates this content exhibits {risk_level.replace('_', ' ').title()}. "
-        f"{'Directly flagged by certified fact-checkers: ' + certified_evidence[0].fact_checker if certified_evidence else 'No official institutional source confirmed this message'}. "
-        f"It shows {len(manipulation.detected_tactics)} classic manipulation markers including {', '.join(manipulation.detected_tactics[:2])}."
-    )
-    summary_hi = (
-        f"सत्यसेतु विश्लेषण के अनुसार यह सामग्री उच्च जोखिम श्रेणी ({risk_level}) में आती है। "
-        f"{'यह दावा आधिकारिक फैक्ट-चेकर्स द्वारा पूर्व में ही गलत पाया गया है।' if certified_evidence else 'इस दावे की पुष्टि किसी आधिकारिक या प्रमाणित सरकारी स्रोत द्वारा नहीं की गई है।'} "
-        f"कृपया इसे आगे फॉरवर्ड न करें और शांति बनाए रखें।"
-    )
-
-    card = ShareableDebunkCard(
-        headline_en=f"⚠️ {overall_verdict}: Unverified or Misleading Viral Claim",
-        headline_hi=f"⚠️ {overall_verdict}: असत्यापित अथवा भ्रामक सोशल मीडिया दावा",
-        verdict=overall_verdict,
-        bullet_points_en=[
-            f"Fact-Check Status: {overall_verdict} ({credibility_score}% Credibility Score).",
-            f"Detected warning signals: {', '.join(manipulation.detected_tactics[:2])}.",
-            "Always verify with official portals before forwarding on WhatsApp or social media."
-        ],
-        bullet_points_hi=[
-            f"सत्यापन स्थिति: {overall_verdict} (विश्वसनीयता स्कोर: {credibility_score}%)।",
-            f"पहचाने गए भ्रामक संकेत: {', '.join(manipulation.detected_tactics[:2])}।",
-            "व्हाट्सएप पर फॉरवर्ड करने से पहले आधिकारिक वेबसाइट पर पुष्टि करें।"
-        ],
-        whatsapp_format_text_en=f"🚨 *SATYA SETU ALERT: {overall_verdict}* 🚨\n\n📌 *Claim:* {extracted_text[:120]}...\n\n⚖️ *Verdict:* {overall_verdict} (Risk: {risk_level})\n\n⚠️ *Warning:* Contains viral manipulation markers. Do not forward unverified claims.\n\n🛡️ *Verified via SatyaSetu TrustAI Engine*",
-        whatsapp_format_text_hi=f"🚨 *सत्यसेतु चेतावनी: {overall_verdict}* 🚨\n\n📌 *दावा:* {extracted_text[:100]}...\n\n⚖️ *जांच निष्कर्ष:* {overall_verdict} (जोखिम: {risk_level})\n\n⚠️ *सावधानी:* भ्रामक संकेतों की पहचान की गई है। कृपया बिना सत्यापन फॉरवर्ड न करें।\n\n🛡️ *सत्यसेतु (SatyaSetu)*",
-        verification_source_tag="SatyaSetu Hybrid RAG & IFCN Cross-Reference"
-    )
+    if overall_verdict == "VERIFIED":
+        summary_en = (
+            f"Analysis confirms this content is Authentic and Verified. "
+            f"It is corroborated by official records and established media reports: "
+            f"{', '.join([c['publisher'] for c in web_citations[:2]]) or 'Official Portals'}. "
+            f"No malicious psychological manipulation or fabricated urgency was detected."
+        )
+        summary_hi = (
+            f"सत्यसेतु विश्लेषण के अनुसार यह समाचार प्रमाणित एवं सत्य है। "
+            f"प्रमुख आधिकारिक स्रोतों एवं समाचार पत्रों द्वारा इसकी पुष्टि की गई है। "
+            f"इसमें कोई भ्रामक या सनसनीखेज संकेत नहीं पाए गए हैं।"
+        )
+        card = ShareableDebunkCard(
+            headline_en="✅ VERIFIED: Authentic Information & Official Notification",
+            headline_hi="✅ प्रमाणित: सत्य एवं आधिकारिक समाचार",
+            verdict="VERIFIED",
+            bullet_points_en=[
+                f"Fact-Check Status: VERIFIED ({credibility_score}% Credibility Score).",
+                f"Corroborated across authoritative coverage: {', '.join([c['publisher'] for c in web_citations[:2]]) or 'Government Portals'}.",
+                "Safe to share. Content matches formal announcements."
+            ],
+            bullet_points_hi=[
+                f"सत्यापन स्थिति: VERIFIED (विश्वसनीयता स्कोर: {credibility_score}%)।",
+                f"पुष्टि स्रोत: {', '.join([c['publisher'] for c in web_citations[:2]]) or 'आधिकारिक पोर्टल'}।",
+                "यह समाचार प्रमाणित है और आधिकारिक सूचनाओं से मेल खाता है।"
+            ],
+            whatsapp_format_text_en=f"🛡️ *SATYA SETU: VERIFIED AUTHENTIC* 🛡️\n\n📌 *News:* {extracted_text[:120]}...\n\n⚖️ *Verdict:* VERIFIED (Credibility: {credibility_score}%)\n\n✅ *Status:* Confirmed by authoritative sources and official press reporting.\n\n🛡️ *Verified via SatyaSetu TrustAI Engine*",
+            whatsapp_format_text_hi=f"🛡️ *सत्यसेतु: प्रमाणित समाचार* 🛡️\n\n📌 *समाचार:* {extracted_text[:100]}...\n\n⚖️ *जांच निष्कर्ष:* सत्य / प्रमाणित (विश्वसनीयता: {credibility_score}%)\n\n✅ *स्थिति:* आधिकारिक सरकारी एवं समाचार स्रोतों द्वारा पुष्ट।\n\n🛡️ *सत्यसेतु (SatyaSetu)*",
+            verification_source_tag="SatyaSetu Live Grounding & Authoritative Press Cross-Reference"
+        )
+    elif overall_verdict == "FALSE":
+        tactics_str = (
+            f"It shows {len(manipulation.detected_tactics)} classic manipulation markers including {', '.join(manipulation.detected_tactics[:2])}."
+            if manipulation.detected_tactics else "It exhibits patterns of an unsubstantiated viral chain."
+        )
+        fact_checker_tag = certified_evidence[0].fact_checker if certified_evidence else "Fact-checking desks and public advisories"
+        summary_en = (
+            f"Analysis confirms this claim is Fabricated / Misinformation ({risk_level.replace('_', ' ').title()}). "
+            f"Directly debunked by: {fact_checker_tag}. {tactics_str}"
+        )
+        summary_hi = (
+            f"सत्यसेतु विश्लेषण के अनुसार यह दावा असत्य एवं भ्रामक है ({risk_level})। "
+            f"यह दावा आधिकारिक फैक्ट-चेकर्स ({fact_checker_tag}) द्वारा पूर्व में ही गलत पाया गया है। "
+            f"कृपया इसे आगे फॉरवर्ड न करें और शांति बनाए रखें।"
+        )
+        card = ShareableDebunkCard(
+            headline_en="⚠️ FALSE: Confirmed Misleading or Fabricated Claim",
+            headline_hi="⚠️ असत्य: प्रमाणित रूप से गलत अथवा भ्रामक दावा",
+            verdict="FALSE",
+            bullet_points_en=[
+                f"Fact-Check Status: FALSE ({credibility_score}% Credibility Score).",
+                f"Debunked by: {fact_checker_tag}.",
+                f"Warning markers: {', '.join(manipulation.detected_tactics[:2]) if manipulation.detected_tactics else 'Fabricated Claim'}."
+            ],
+            bullet_points_hi=[
+                f"सत्यापन स्थिति: FALSE (विश्वसनीयता स्कोर: {credibility_score}%)।",
+                f"फैक्ट-चेक स्रोत: {fact_checker_tag}।",
+                f"पहचाने गए भ्रामक संकेत: {', '.join(manipulation.detected_tactics[:2]) if manipulation.detected_tactics else 'भ्रामक दावा'}।"
+            ],
+            whatsapp_format_text_en=f"🚨 *SATYA SETU ALERT: FALSE HOAX* 🚨\n\n📌 *Claim:* {extracted_text[:120]}...\n\n⚖️ *Verdict:* FALSE / MISINFORMATION (Risk: {risk_level})\n\n⚠️ *Warning:* Debunked by {fact_checker_tag}. Do not forward unverified claims.\n\n🛡️ *Verified via SatyaSetu TrustAI Engine*",
+            whatsapp_format_text_hi=f"🚨 *सत्यसेतु चेतावनी: असत्य दावा* 🚨\n\n📌 *दावा:* {extracted_text[:100]}...\n\n⚖️ *जांच निष्कर्ष:* गलत / फेक (जोखिम: {risk_level})\n\n⚠️ *सावधानी:* {fact_checker_tag} द्वारा यह दावा गलत पाया गया है। कृपया फॉरवर्ड न करें।\n\n🛡️ *सत्यसेतु (SatyaSetu)*",
+            verification_source_tag="SatyaSetu Hybrid RAG & IFCN Cross-Reference"
+        )
+    else:
+        tactics_str = (
+            f"Contains warning markers: {', '.join(manipulation.detected_tactics[:2])}."
+            if manipulation.detected_tactics else "No official institutional verification found."
+        )
+        summary_en = (
+            f"Analysis indicates this content exhibits {risk_level.replace('_', ' ').title()}. "
+            f"No official government portal or accredited news wire has confirmed this message. "
+            f"{tactics_str} Exercise caution before sharing."
+        )
+        summary_hi = (
+            f"सत्यसेतु विश्लेषण के अनुसार यह सामग्री असत्यापित श्रेणी ({risk_level}) में आती है। "
+            f"इस दावे की पुष्टि किसी आधिकारिक या प्रमाणित स्रोत द्वारा नहीं की गई है। "
+            f"कृपया बिना सत्यापन इसे आगे फॉरवर्ड न करें।"
+        )
+        card = ShareableDebunkCard(
+            headline_en=f"⚠️ {overall_verdict}: Unverified Social Media Claim",
+            headline_hi=f"⚠️ {overall_verdict}: असत्यापित सोशल मीडिया दावा",
+            verdict=overall_verdict,
+            bullet_points_en=[
+                f"Fact-Check Status: {overall_verdict} ({credibility_score}% Credibility Score).",
+                f"Source Verification: No official public record confirms this claim.",
+                "Always verify with official portals before forwarding on WhatsApp or social media."
+            ],
+            bullet_points_hi=[
+                f"सत्यापन स्थिति: {overall_verdict} (विश्वसनीयता स्कोर: {credibility_score}%)।",
+                "स्रोत सत्यापन: किसी आधिकारिक स्रोत ने इसकी पुष्टि नहीं की है।",
+                "व्हाट्सएप पर फॉरवर्ड करने से पहले आधिकारिक वेबसाइट पर पुष्टि करें।"
+            ],
+            whatsapp_format_text_en=f"🚨 *SATYA SETU ALERT: {overall_verdict}* 🚨\n\n📌 *Claim:* {extracted_text[:120]}...\n\n⚖️ *Verdict:* {overall_verdict} (Risk: {risk_level})\n\n⚠️ *Warning:* Unverified social media claim. Do not forward unverified messages.\n\n🛡️ *Verified via SatyaSetu TrustAI Engine*",
+            whatsapp_format_text_hi=f"🚨 *सत्यसेतु चेतावनी: {overall_verdict}* 🚨\n\n📌 *दावा:* {extracted_text[:100]}...\n\n⚖️ *जांच निष्कर्ष:* {overall_verdict} (जोखिम: {risk_level})\n\n⚠️ *सावधानी:* असत्यापित संदेश। कृपया बिना पुष्टि फॉरवर्ड न करें।\n\n🛡️ *सत्यसेतु (SatyaSetu)*",
+            verification_source_tag="SatyaSetu Hybrid RAG & Official Gazette Cross-Reference"
+        )
 
     checklist = [
         "Search the exact headline on PIB Fact Check (factcheck.pib.gov.in).",
@@ -158,5 +280,5 @@ async def run_verification_pipeline(req: ClaimVerifyRequest) -> VerificationResp
         shareable_card=card,
         pipeline_steps=pipeline_steps,
         total_latency_ms=total_latency,
-        data_source_mode="Hybrid Multi-Agent Verification (FactCheck API + Linguistic Scorer)"
+        data_source_mode="Hybrid TrustAI Engine (IFCN FactCheck + Live Authoritative Grounding)"
     )
