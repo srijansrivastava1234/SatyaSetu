@@ -9,8 +9,8 @@
 
 | Member & Role | Hardware | Code / Technical Ownership | Stage & Non-Technical Ownership |
 | :--- | :--- | :--- | :--- |
-| **Srijan Srivastava**: Team Captain & Full-Stack Architect | **Laptop 1** | `main.py`, `orchestrator.py`, FastAPI, Cloud Deployment | Overall Captain Anchor, Stage Delivery, Architecture Defense |
-| **Anshika Pandey**: AI, Vision & Benchmark Lead | **Laptop 2** | `atomic_extractor.py`, Gemini OCR, Stance Detection | Accuracy Defense, Multimodal Benchmarks, OCR Pipeline |
+| **Anshika Pandey**: Team Leader & AI/NLP Lead | **Laptop 1** | `atomic_extractor.py`, Gemini OCR, Stance Detection | Team Leadership, Strategic Pitch, Accuracy & AI Defense |
+| **Srijan Srivastava**: Full-Stack System Architect | **Laptop 2** | `main.py`, `orchestrator.py`, FastAPI, Cloud Deployment | Overall Architecture Defense, Cloud Operations, API Stability |
 | **Amit Kumar Rajput**: Fact-Checking & Knowledge Architect | **Laptop 3** | `factcheck_engine.py`, ClaimReview API, PIB Sources | API Reliability, IFCN Standards, Gazettes Grounding |
 | **Akhilesh Sharma**: Frontend Developer & Simulator Lead | **Laptop 4** | `index.html`, React UI, WhatsApp Simulator, Clipboard Cards | Stage UI Driver, Live Interaction, UX & Inclusivity |
 | **Suryansh Pandey**: Linguistic Deception & Policy Lead | **NO LAPTOP (100% Stage Master)** | Psychological Deception Rules, S.A.T.Y.A. Protocol | **Speaker A** (Pitch Framing & Hook), Timekeeper, Q&A Anchor |
