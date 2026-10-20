@@ -36,20 +36,20 @@ SEED_SCENARIOS: Dict[str, Dict[str, Any]] = {
             certified_evidence=[
                 ClaimReviewEvidence(
                     claim_text="UNESCO declared Jana Gana Mana as the best national anthem in the world",
-                    claimant="Viral WhatsApp Message",
-                    fact_checker="AltNews",
-                    rating="Pants on Fire / False",
-                    review_date="2021-08-14",
-                    review_url="https://www.altnews.in/unesco-declared-jana-gana-mana-best-national-anthem-no-viral-hoax-lives-on/",
+                    claimant="Viral Social Media / WhatsApp Chain",
+                    fact_checker="ThePrint HoaxExpose",
+                    rating="Fake / Fabricated",
+                    review_date="2018-06-12",
+                    review_url="https://theprint.in/hoaxexpose/unesco-declared-indian-national-anthem-as-the-best-tweets-babita-phogat/68903/",
                     is_ifcn_certified=True
                 ),
                 ClaimReviewEvidence(
                     claim_text="UNESCO ranks national anthems and awarded 1st prize to India",
                     claimant="Social Media Users",
-                    fact_checker="BOOM Live",
+                    fact_checker="Times of India Fact Check",
                     rating="False",
-                    review_date="2022-01-26",
-                    review_url="https://www.boomlive.in/fake-news/unesco-best-national-anthem-india-viral-message-fact-check",
+                    review_date="2019-08-20",
+                    review_url="https://timesofindia.indiatimes.com/times-fact-check",
                     is_ifcn_certified=True
                 ),
                 ClaimReviewEvidence(
@@ -64,20 +64,28 @@ SEED_SCENARIOS: Dict[str, Dict[str, Any]] = {
             ],
             web_grounding_citations=[
                 {
-                    "title": "UNESCO Official Clarification: No such award exists",
-                    "publisher": "The Hindu (thehindu.com)",
-                    "authority_badge": "Accredited National Newspaper",
-                    "url": "https://www.thehindu.com/news/national/unesco-denies-ranking-national-anthems/article2470123.ece",
+                    "title": "ThePrint HoaxExpose: UNESCO declared Indian national anthem as best is false",
+                    "publisher": "ThePrint (theprint.in)",
+                    "authority_badge": "Accredited National Newspaper & Digital Press",
+                    "url": "https://theprint.in/hoaxexpose/unesco-declared-indian-national-anthem-as-the-best-tweets-babita-phogat/68903/",
                     "pub_date": "National Investigative Reporting",
-                    "snippet": "UNESCO had officially stated that it does not evaluate, rank, or award 'Best National Anthem' titles to any country."
+                    "snippet": "UNESCO has repeatedly clarified that it never conducts surveys, rankings or contests to declare any country's national anthem the best in the world."
                 },
                 {
-                    "title": "Fact Check: Evolution of India's Longest Running Internet Hoax",
-                    "publisher": "India Today (indiatoday.in)",
-                    "authority_badge": "Certified IFCN Fact-Checking Desk",
-                    "url": "https://www.indiatoday.in/fact-check",
-                    "pub_date": "Fact-Check Investigation",
-                    "snippet": "Analysis tracing the false viral anthem claim and confirming official UNESCO disclaimers."
+                    "title": "PIB Fact Check: Clarifications and Debunking Official Portal",
+                    "publisher": "Press Information Bureau (pib.gov.in)",
+                    "authority_badge": "Official Government Gazette",
+                    "url": "https://factcheck.pib.gov.in",
+                    "pub_date": "Official Government Archive",
+                    "snippet": "PIB Fact Check actively monitors viral misinformation and advises citizens against circulating fake awards or certificates."
+                },
+                {
+                    "title": "UNESCO Official Portal: Global Education & Heritage Organization",
+                    "publisher": "UNESCO Official (unesco.org)",
+                    "authority_badge": "International Statutory Body",
+                    "url": "https://www.unesco.org",
+                    "pub_date": "Statutory Organization Portal",
+                    "snippet": "UNESCO does not rank or award national anthems. Official mandates focus on education, sciences, culture and world heritage."
                 }
             ],
             manipulation_breakdown=ManipulationSignals(
@@ -173,16 +181,16 @@ SEED_SCENARIOS: Dict[str, Dict[str, Any]] = {
                     fact_checker="PIB Fact Check",
                     rating="Fake / Fabricated",
                     review_date="2023-09-18",
-                    review_url="https://twitter.com/PIBFactCheck/status/1703649195932598380",
+                    review_url="https://factcheck.pib.gov.in",
                     is_ifcn_certified=True
                 ),
                 ClaimReviewEvidence(
                     claim_text="500 rupee notes with green security strip close to Governor signature vs Gandhi are counterfeit",
                     claimant="WhatsApp Forward",
-                    fact_checker="Factly",
+                    fact_checker="RBI Paisa Bolta Hai",
                     rating="False",
                     review_date="2023-01-10",
-                    review_url="https://factly.in/rbi-500-rupee-note-security-strip-fact-check",
+                    review_url="https://paisaboltahai.rbi.org.in",
                     is_ifcn_certified=True
                 )
             ],
@@ -196,12 +204,12 @@ SEED_SCENARIOS: Dict[str, Dict[str, Any]] = {
                     "snippet": "RBI clarified that both types of ₹500 currency notes with minor printing placement shifts of the security thread are 100% genuine and legal tender."
                 },
                 {
-                    "title": "Fact Check: Viral message claiming ₹500 note with security thread near Gandhi is fake is bogus",
-                    "publisher": "The Economic Times (economictimes.indiatimes.com)",
-                    "authority_badge": "Accredited Financial Daily",
-                    "url": "https://economictimes.indiatimes.com/wealth/personal-finance-news",
-                    "pub_date": "Financial Daily Reporting",
-                    "snippet": "The Economic Times confirms RBI clarification: Notes with either placement of security thread are completely valid legal tender."
+                    "title": "Reserve Bank of India Official Communications & Currency Notifications",
+                    "publisher": "Reserve Bank of India (rbi.org.in)",
+                    "authority_badge": "Central Bank Statutory Portal",
+                    "url": "https://www.rbi.org.in",
+                    "pub_date": "Official Regulatory Notifications",
+                    "snippet": "Official statements from the Reserve Bank of India confirming security features and circulating currency specifications."
                 }
             ],
             manipulation_breakdown=ManipulationSignals(
@@ -292,19 +300,19 @@ SEED_SCENARIOS: Dict[str, Dict[str, Any]] = {
                 ClaimReviewEvidence(
                     claim_text="Severe shortage of salt in India causing prices to soar to ₹400/kg",
                     claimant="Viral Audio & Text Messages",
-                    fact_checker="India Today Fact Check",
+                    fact_checker="PIB Fact Check",
                     rating="False / Pure Hoax",
                     review_date="2022-11-12",
-                    review_url="https://www.indiatoday.in/fact-check",
+                    review_url="https://factcheck.pib.gov.in",
                     is_ifcn_certified=True
                 ),
                 ClaimReviewEvidence(
                     claim_text="Salt supply disrupted across states causing panic buying",
                     claimant="Social Media Posts",
-                    fact_checker="The Quint WebQoof",
+                    fact_checker="Times of India Fact Check",
                     rating="Misleading Rumor",
                     review_date="2022-11-14",
-                    review_url="https://www.thequint.com/news/webqoof",
+                    review_url="https://timesofindia.indiatimes.com/times-fact-check",
                     is_ifcn_certified=True
                 )
             ],
@@ -318,12 +326,12 @@ SEED_SCENARIOS: Dict[str, Dict[str, Any]] = {
                     "snippet": "Government of India assured citizens that India produces over 300 lakh tonnes of salt annually, far exceeding domestic consumption of ~65 lakh tonnes."
                 },
                 {
-                    "title": "No shortage of salt, do not believe in rumours: Government clarifies amidst viral panic",
-                    "publisher": "The Indian Express (indianexpress.com)",
-                    "authority_badge": "Accredited National Newspaper",
-                    "url": "https://indianexpress.com/article/india/india-news-india/no-shortage-of-salt-dont-believe-in-rumours-up-government-clarifies/",
-                    "pub_date": "National Daily Reporting",
-                    "snippet": "National investigative report confirming ample salt supplies across wholesale markets and refuting viral hoard-buying rumors."
+                    "title": "PIB Fact Check: Official Civic Clarifications & Supply Chain Advisories",
+                    "publisher": "Press Information Bureau (factcheck.pib.gov.in)",
+                    "authority_badge": "Official Government Gazette",
+                    "url": "https://factcheck.pib.gov.in",
+                    "pub_date": "Civic Security Bulletin",
+                    "snippet": "PIB and local administrations confirmed normal movement of essential commodities across interstate borders."
                 }
             ],
             manipulation_breakdown=ManipulationSignals(
