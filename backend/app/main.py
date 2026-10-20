@@ -20,10 +20,19 @@ app.add_middleware(
 )
 
 import os
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, Response
 
 STATIC_HTML_PATH = os.path.join(os.path.dirname(__file__), "static", "index.html")
 STATIC_404_PATH = os.path.join(os.path.dirname(__file__), "static", "404.html")
+STATIC_FAVICON_PATH = os.path.join(os.path.dirname(__file__), "static", "favicon.svg")
+
+@app.get("/favicon.ico", include_in_schema=False)
+@app.get("/favicon.svg", include_in_schema=False)
+async def serve_favicon():
+    if os.path.exists(STATIC_FAVICON_PATH):
+        with open(STATIC_FAVICON_PATH, "r", encoding="utf-8") as f:
+            return Response(content=f.read(), media_type="image/svg+xml")
+    return Response(status_code=404)
 
 @app.get("/", response_class=HTMLResponse)
 async def serve_home():

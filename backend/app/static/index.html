@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SatyaSetu | TrustAI Misinformation & WhatsApp Intelligence Engine</title>
-  
+  <title>SatyaSetu — AI Misinformation & Fact-Checking Engine</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.svg">
   <!-- Meta Descriptions & SEO Tags (Item 11 & 12) -->
   <meta name="description" content="SatyaSetu is an AI-powered digital misinformation intelligence engine that examines suspicious WhatsApp forwards, cross-references certified IFCN ClaimReview sources, and dissects psychological manipulation markers.">
   <meta name="keywords" content="TrustAI, SatyaSetu, fake news detection, WhatsApp misinformation, fact check India, PIB Fact Check, ClaimReview, multimodal OCR">
@@ -682,7 +683,7 @@
       document.getElementById('claim-url').value = '';
       clearImage();
       selectedScenarioId = null;
-      document.title = "SatyaSetu | TrustAI Misinformation & WhatsApp Intelligence Engine";
+      document.title = "SatyaSetu — AI Misinformation & Fact-Checking Engine";
     }
 
     async function selectScenario(scenarioId) {
@@ -694,7 +695,7 @@
       const btn = document.getElementById('btn-submit');
       btn.innerHTML = '⏳ Interrogating Claim Database...';
       btn.disabled = true;
-      document.title = "⏳ Verifying Claim Authenticity... | SatyaSetu";
+      document.title = "SatyaSetu — ⏳ Verifying Claim...";
 
       const payload = {
         scenario_id: selectedScenarioId || undefined,
@@ -722,11 +723,8 @@
     }
 
     function renderResults(res) {
-      // Dynamic Page Title Update (Item 11)
-      const claimSnippet = res.atomic_claims && res.atomic_claims.length > 0
-        ? res.atomic_claims[0].text.substring(0, 32) + '...'
-        : 'Claim Verification';
-      document.title = `[${res.overall_verdict}] ${claimSnippet} | SatyaSetu`;
+      // Dynamic Page Title Update: Brand first so tab stays clean
+      document.title = `SatyaSetu — [${res.overall_verdict}] Fact Check`;
 
       document.getElementById('results-area').style.display = 'block';
       document.getElementById('pipeline-card').style.display = 'block';
