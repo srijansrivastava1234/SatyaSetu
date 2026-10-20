@@ -3,959 +3,311 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SatyaSetu — AI Misinformation & Fact-Checking Engine</title>
+  <title>SatyaSetu — Institutional Misinformation & Fact-Checking Engine</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="shortcut icon" href="/favicon.svg">
-  <!-- Meta Descriptions & SEO Tags (Item 11 & 12) -->
-  <meta name="description" content="SatyaSetu is an AI-powered digital misinformation intelligence engine that examines suspicious WhatsApp forwards, cross-references certified IFCN ClaimReview sources, and dissects psychological manipulation markers.">
-  <meta name="keywords" content="TrustAI, SatyaSetu, fake news detection, WhatsApp misinformation, fact check India, PIB Fact Check, ClaimReview, multimodal OCR">
-  <meta name="author" content="SatyaSetu Engineering Team (PS ID: 202611)">
+  <meta name="description" content="SatyaSetu is a TrustAI digital misinformation intelligence engine designed to analyze viral messaging, cross-reference certified IFCN ClaimReview records, and dissect psychological manipulation tactics.">
+  <meta name="keywords" content="SatyaSetu, TrustAI, fact checking, misinformation detection, ClaimReview, IFCN, PIB Fact Check, linguistic analysis">
+  <meta name="author" content="SatyaSetu Project Core Team">
   <meta name="robots" content="index, follow">
-  
-  <!-- OpenGraph / Social Sharing Tags -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="SatyaSetu | TrustAI Misinformation & WhatsApp Intelligence">
-  <meta property="og:description" content="Multimodal OCR extraction, certified IFCN ClaimReview grounding, and linguistic deception diagnostics engineered to stop viral fake news at the source.">
-  <meta property="og:image" content="https://raw.githubusercontent.com/google/material-design-icons/master/png/action/verified_user/materialicons/48dp/2x/baseline_verified_user_black_48dp.png">
-  <meta property="og:url" content="http://127.0.0.1:8000/">
-  <meta property="og:site_name" content="SatyaSetu TrustAI">
-
-  <!-- Twitter Card Tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="SatyaSetu | TrustAI Misinformation & WhatsApp Intelligence">
-  <meta name="twitter:description" content="Examine suspicious WhatsApp forwards, cross-reference certified IFCN debunks, and deploy 1-click counter-debunk cards.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    html { scroll-behavior: smooth; }
-
-    :root {
-      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-      --bg-primary: #07090e;
-      --bg-secondary: #0d121f;
-      --bg-card: rgba(18, 24, 38, 0.75);
-      --bg-card-hover: rgba(24, 33, 54, 0.85);
-      --border-color: rgba(255, 255, 255, 0.08);
-      --text-primary: #f8fafc;
-      --text-secondary: #94a3b8;
-      --text-muted: #64748b;
-      --color-brand: #38bdf8;
-      --color-emerald: #10b981;
-      --color-crimson: #ef4444;
-      --color-amber: #f59e0b;
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 18px;
-      --radius-full: 9999px;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: var(--font-sans);
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      min-height: 100vh;
-      line-height: 1.5;
-      background-image: 
-        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.07) 0%, transparent 40%),
-        radial-gradient(circle at 85% 85%, rgba(249, 115, 22, 0.06) 0%, transparent 40%),
-        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
-    }
-
-    button { font-family: inherit; cursor: pointer; border: none; outline: none; transition: all 0.2s ease; }
-    input, textarea { font-family: inherit; border: 1px solid var(--border-color); outline: none; color: var(--text-primary); background: rgba(10, 15, 26, 0.8); border-radius: var(--radius-md); transition: all 0.2s ease; }
-    input:focus, textarea:focus { border-color: var(--color-brand); box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2); }
-
-    .glass-panel {
-      background: var(--bg-card);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
-    }
-    .glass-panel-interactive {
-      background: var(--bg-card);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      transition: all 0.25s ease;
-      cursor: pointer;
-    }
-    .glass-panel-interactive:hover {
-      background: var(--bg-card-hover);
-      border-color: rgba(255, 255, 255, 0.15);
-      transform: translateY(-2px);
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: var(--radius-full);
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-    .badge-false { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
-    .badge-true { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-    .badge-warning { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
-    .badge-neutral { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.3); }
-
-    .status-indicator {
-      width: 8px; height: 8px; border-radius: 50%; display: inline-block; position: relative; background: #10b981; box-shadow: 0 0 10px #10b981;
-    }
-    .status-indicator::after {
-      content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; border-radius: 50%; border: 1.5px solid #10b981; animation: pulse-ring 1.8s infinite;
-    }
-    @keyframes pulse-ring { 0% { transform: scale(0.9); opacity: 0.9; } 50% { transform: scale(1.6); opacity: 0.2; } 100% { transform: scale(2); opacity: 0; } }
-
-    .toast {
-      position: fixed; bottom: 24px; right: 24px; background: #10b981; color: #fff; padding: 12px 20px; border-radius: 10px; font-weight: 600; font-size: 0.85rem; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 1000; display: none;
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/app.css">
 </head>
 <body>
-  <div id="toast" class="toast">Copied to clipboard! Ready to paste into WhatsApp.</div>
 
-  <!-- Header -->
-  <header style="display:flex; align-items:center; justify-content:space-between; padding:16px 32px; border-bottom:1px solid var(--border-color); background:rgba(7,9,14,0.85); backdrop-filter:blur(12px); position:sticky; top:0; z-index:50;">
-    <div style="display:flex; align-items:center; gap:14px;">
-      <div style="width:42px; height:42px; border-radius:12px; background:linear-gradient(135deg, #f97316 0%, #38bdf8 50%, #10b981 100%); display:flex; align-items:center; justify-content:center; box-shadow:0 0 20px rgba(56,189,248,0.3); font-size:1.4rem;">
-        🛡️
-      </div>
-      <div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <h1 style="font-size:1.35rem; font-weight:800; letter-spacing:-0.02em; color:#fff;">
-            Satya<span style="color:#38bdf8;">Setu</span>
-          </h1>
-          <span class="badge badge-neutral" style="font-size:0.65rem; padding:2px 8px;">PS ID: 202611</span>
+  <!-- Application Navbar -->
+  <header class="app-header">
+    <div class="nav-container">
+      <a href="/" class="brand-link" aria-label="SatyaSetu Home">
+        <div class="brand-logo-icon">S</div>
+        <div>
+          <div class="brand-title">SatyaSetu</div>
+          <div class="brand-tagline">Institutional Fact-Checking & TrustAI Engine</div>
         </div>
-        <p style="font-size:0.75rem; color:var(--text-secondary);">
-          TrustAI Misinformation & WhatsApp Manipulation Intelligence Engine
-        </p>
+      </a>
+      <div class="nav-actions">
+        <span id="stats-cache-hits" class="badge badge-neutral" style="font-family:var(--font-mono);">SQLite WAL Cache Active</span>
+        <button class="btn btn-secondary" onclick="toggleKeyModal()" aria-label="Configure API Keys">
+          Settings
+        </button>
       </div>
-    </div>
-
-    <!-- Internal Navigation Links (Item 3) -->
-    <nav style="display:flex; align-items:center; gap:18px;">
-      <a href="#scenarios" style="color:var(--text-secondary); text-decoration:none; font-size:0.82rem; font-weight:600; transition:color 0.2s;" onmouseover="this.style.color='#38bdf8'" onmouseout="this.style.color='var(--text-secondary)'">⚡ Presets</a>
-      <a href="#analyzer" style="color:var(--text-secondary); text-decoration:none; font-size:0.82rem; font-weight:600; transition:color 0.2s;" onmouseover="this.style.color='#38bdf8'" onmouseout="this.style.color='var(--text-secondary)'">🔍 Analyzer</a>
-      <a href="#whatsapp-simulator" style="color:var(--text-secondary); text-decoration:none; font-size:0.82rem; font-weight:600; transition:color 0.2s;" onmouseover="this.style.color='#38bdf8'" onmouseout="this.style.color='var(--text-secondary)'">💬 WhatsApp Simulator</a>
-      <a href="#protocol" style="color:var(--text-secondary); text-decoration:none; font-size:0.82rem; font-weight:600; transition:color 0.2s;" onmouseover="this.style.color='#38bdf8'" onmouseout="this.style.color='var(--text-secondary)'">🛡️ Protocol</a>
-      <a href="#team" style="color:var(--text-secondary); text-decoration:none; font-size:0.82rem; font-weight:600; transition:color 0.2s;" onmouseover="this.style.color='#38bdf8'" onmouseout="this.style.color='var(--text-secondary)'">👥 Team</a>
-    </nav>
-
-    <div style="display:flex; align-items:center; gap:16px;">
-      <div style="display:flex; align-items:center; gap:8px; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.2); padding:6px 14px; border-radius:var(--radius-full); font-size:0.75rem; color:#34d399;">
-        <span class="status-indicator"></span>
-        <span>Google Fact Check & PIB ClaimReview Active</span>
-      </div>
-      <button onclick="toggleKeyModal()" style="display:flex; align-items:center; gap:6px; padding:7px 14px; border-radius:var(--radius-md); background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.3); color:#38bdf8; font-size:0.8rem; font-weight:600;">
-        🔑 <span>Gemini API Key</span>
-      </button>
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main style="max-width:1280px; margin:0 auto; padding:32px 24px; width:100%;">
-    <!-- Hero Pitch Section -->
-    <div style="text-align:center; margin-bottom:32px;">
-      <div style="display:inline-flex; align-items:center; gap:8px; padding:4px 14px; border-radius:var(--radius-full); background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.25); font-size:0.78rem; color:#38bdf8; font-weight:700; margin-bottom:12px; letter-spacing:0.04em; text-transform:uppercase;">
-        Problem Statement 11 • PS ID: 202611
+  <!-- Main View Container -->
+  <main class="main-content">
+
+    <!-- Hero Introduction -->
+    <section class="hero-section">
+      <div class="hero-pill">
+        <span>Verified Public Integrity Network</span>
       </div>
-      <h2 style="font-size:clamp(1.8rem, 4vw, 2.5rem); font-weight:800; letter-spacing:-0.02em; line-height:1.2; margin-bottom:12px;">
-        Tackling Digital Misinformation & WhatsApp Viral Panics
-      </h2>
-      <p style="font-size:1rem; color:var(--text-secondary); max-width:720px; margin:0 auto 20px auto; line-height:1.6;">
-        Multimodal OCR extraction, certified IFCN ClaimReview grounding, and linguistic deception diagnostics engineered to stop viral fake news at the source.
+      <h1 class="hero-title">
+        <span>Neutralize Viral Misinformation at the Source</span>
+      </h1>
+      <p class="hero-desc">
+        A deterministic, multi-tier intelligence pipeline combining certified IFCN fact-checking repositories, real-time authoritative press grounding, and deception telemetry.
       </p>
 
-      <!-- Above The Fold CTAs (Item 2) -->
-      <div style="display:flex; justify-content:center; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:20px;">
-        <a href="#analyzer" onclick="focusInput()" style="display:inline-flex; align-items:center; gap:8px; padding:12px 26px; border-radius:var(--radius-md); background:linear-gradient(135deg, #38bdf8 0%, #2563eb 100%); color:#fff; font-weight:700; text-decoration:none; font-size:0.95rem; box-shadow:0 4px 20px rgba(56,189,248,0.35); transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
-          🚀 Scan Viral WhatsApp Forward
-        </a>
-        <a href="#scenarios" style="display:inline-flex; align-items:center; gap:8px; padding:12px 24px; border-radius:var(--radius-md); background:rgba(255,255,255,0.05); color:#f8fafc; font-weight:600; text-decoration:none; font-size:0.95rem; border:1px solid var(--border-color); transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
-          ⚡ Explore 4 Viral Presets
-        </a>
-        <a href="#protocol" style="display:inline-flex; align-items:center; gap:8px; padding:12px 24px; border-radius:var(--radius-md); background:rgba(16,185,129,0.12); color:#34d399; font-weight:600; text-decoration:none; font-size:0.95rem; border:1px solid rgba(16,185,129,0.3); transition:background 0.2s;" onmouseover="this.style.background='rgba(16,185,129,0.2)'" onmouseout="this.style.background='rgba(16,185,129,0.12)'">
-          🛡️ Citizen Verification Protocol
-        </a>
-      </div>
-
-      <!-- Trust Badges Above The Fold -->
-      <div style="display:flex; justify-content:center; align-items:center; gap:20px; flex-wrap:wrap; font-size:0.75rem; color:var(--text-muted);">
-        <span style="display:flex; align-items:center; gap:5px;"><strong style="color:#38bdf8;">⚡ Sub-500ms</strong> Deterministic Latency</span>
+      <div class="trust-pillars">
+        <div class="trust-pillar-item">
+          <strong>Certified Provenance</strong> (PIB, AltNews, BOOM, Factly)
+        </div>
         <span>•</span>
-        <span style="display:flex; align-items:center; gap:5px;"><strong style="color:#10b981;">🏛️ PIB & IFCN</strong> Certified Provenance</span>
+        <div class="trust-pillar-item">
+          <strong>Sub-Second Latency</strong> (Indexed SQLite & Live RSS)
+        </div>
         <span>•</span>
-        <span style="display:flex; align-items:center; gap:5px;"><strong style="color:#f59e0b;">🔒 Zero-Retention</strong> Privacy Architecture</span>
-      </div>
-    </div>
-
-
-    <!-- 1. Instant Showcase Presets -->
-    <div id="scenarios" style="margin-bottom:24px; scroll-margin-top:90px;">
-      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <span style="color:#f59e0b; font-size:1.1rem;">⚡</span>
-          <span style="font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8;">
-            Instant Pitch Showcase Scenarios (Zero-Latency Live Demo)
-          </span>
-        </div>
-        <span style="font-size:0.75rem; color:#64748b;">Click to load verified viral case</span>
-      </div>
-
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:12px;">
-        <div onclick="selectScenario('unesco-anthem')" class="glass-panel-interactive" style="padding:14px 16px;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-            <span style="font-size:1.3rem;">🇮🇳</span>
-            <span class="badge badge-false" style="font-size:0.65rem;">Pride-Bait Hoax</span>
-          </div>
-          <div style="font-weight:700; font-size:0.9rem; color:#f8fafc; margin-bottom:4px;">UNESCO Best Anthem Award</div>
-          <div style="font-size:0.75rem; color:#94a3b8; line-height:1.35;">Viral forward claiming India won #1 national anthem ranking worldwide.</div>
-        </div>
-
-        <div onclick="selectScenario('rbi-500-note')" class="glass-panel-interactive" style="padding:14px 16px;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-            <span style="font-size:1.3rem;">💵</span>
-            <span class="badge badge-false" style="font-size:0.65rem;">Financial Panic</span>
-          </div>
-          <div style="font-weight:700; font-size:0.9rem; color:#f8fafc; margin-bottom:4px;">Fake RBI ₹500 Green Strip Notice</div>
-          <div style="font-size:0.75rem; color:#94a3b8; line-height:1.35;">Warning claiming ₹500 notes with green strip near Gandhi are counterfeit.</div>
-        </div>
-
-        <div onclick="selectScenario('salt-shortage')" class="glass-panel-interactive" style="padding:14px 16px;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-            <span style="font-size:1.3rem;">🧂</span>
-            <span class="badge badge-false" style="font-size:0.65rem;">Supply Panic</span>
-          </div>
-          <div style="font-weight:700; font-size:0.9rem; color:#f8fafc; margin-bottom:4px;">Salt Shortage Panic Rumor</div>
-          <div style="font-size:0.75rem; color:#94a3b8; line-height:1.35;">Panic-buying rumor alleging salt selling at ₹400/kg across northern states.</div>
-        </div>
-
-        <div onclick="selectScenario('cbse-exam-circular')" class="glass-panel-interactive" style="padding:14px 16px;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-            <span style="font-size:1.3rem;">🏛️</span>
-            <span class="badge badge-true" style="font-size:0.65rem;">Authentic Control</span>
-          </div>
-          <div style="font-weight:700; font-size:0.9rem; color:#f8fafc; margin-bottom:4px;">Official CBSE Exam Circular</div>
-          <div style="font-size:0.75rem; color:#94a3b8; line-height:1.35;">Control case: Authentic government notification with formal administrative metadata.</div>
+        <div class="trust-pillar-item">
+          <strong>Zero-Retention Privacy</strong> (No User PII Logged)
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- 2. Multimodal Input Form -->
-    <div id="analyzer" class="glass-panel" style="padding:24px; margin-bottom:28px; scroll-margin-top:90px;">
+    <!-- Verified Incident Archive (Presets) -->
+    <section class="presets-section" aria-label="Verified Incident Presets">
+      <div class="section-header">
+        <h2 class="section-title">Verified Incident Archive & Sample Reports</h2>
+        <span style="font-size:0.75rem; color:var(--text-muted);">Select a case to view complete pipeline telemetry</span>
+      </div>
 
-      <div style="display:flex; gap:8px; border-bottom:1px solid var(--border-color); padding-bottom:14px; margin-bottom:20px;">
-        <button id="tab-text" onclick="setTab('text')" style="display:flex; align-items:center; gap:8px; padding:8px 16px; border-radius:var(--radius-md); background:rgba(56,189,248,0.15); border:1px solid rgba(56,189,248,0.3); color:#38bdf8; font-weight:600; font-size:0.85rem;">
-          💬 WhatsApp Message / Text
+      <div class="presets-grid">
+        <article class="preset-card" onclick="selectScenario('unesco-anthem')" tabindex="0" role="button" aria-label="Load UNESCO Best Anthem Award preset">
+          <div class="preset-top">
+            <span class="category-tag badge-debunked">Debunked Hoax</span>
+          </div>
+          <h3 class="preset-title">UNESCO National Anthem Award</h3>
+          <p class="preset-snippet">Recurrent pride-bait claim alleging international ranking award for India's national anthem.</p>
+        </article>
+
+        <article class="preset-card" onclick="selectScenario('rbi-500-note')" tabindex="0" role="button" aria-label="Load RBI ₹500 Green Strip preset">
+          <div class="preset-top">
+            <span class="category-tag badge-debunked">Financial Phishing</span>
+          </div>
+          <h3 class="preset-title">Fake RBI ₹500 Security Strip Alert</h3>
+          <p class="preset-snippet">Currency panic rumor asserting green security strip location marks notes as counterfeit.</p>
+        </article>
+
+        <article class="preset-card" onclick="selectScenario('salt-shortage')" tabindex="0" role="button" aria-label="Load Salt Shortage Rumor preset">
+          <div class="preset-top">
+            <span class="category-tag badge-debunked">Supply Chain Panic</span>
+          </div>
+          <h3 class="preset-title">Salt Shortage Price Inflation Rumor</h3>
+          <p class="preset-snippet">Artificial scarcity panic alleging severe regional salt deficits and speculative pricing.</p>
+        </article>
+
+        <article class="preset-card" onclick="selectScenario('cbse-exam-circular')" tabindex="0" role="button" aria-label="Load CBSE Official Circular preset">
+          <div class="preset-top">
+            <span class="category-tag badge-verified">Official Notice</span>
+          </div>
+          <h3 class="preset-title">CBSE Examination Date Sheet Notification</h3>
+          <p class="preset-snippet">Authentic statutory circular containing formal institutional administrative anchors.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Ingestion & Verification Input Deck -->
+    <section class="card analyzer-card" aria-label="Claim Verification Input Form">
+      <nav class="tab-nav" role="tablist">
+        <button id="tab-text" class="tab-btn active" role="tab" aria-selected="true" onclick="setTab('text')">
+          Message & Raw Text
         </button>
-        <button id="tab-image" onclick="setTab('image')" style="display:flex; align-items:center; gap:8px; padding:8px 16px; border-radius:var(--radius-md); background:transparent; border:1px solid transparent; color:var(--text-secondary); font-weight:600; font-size:0.85rem;">
-          🖼️ Screenshot / Poster OCR
+        <button id="tab-image" class="tab-btn" role="tab" aria-selected="false" onclick="setTab('image')">
+          Screenshot & Poster OCR
         </button>
-        <button id="tab-url" onclick="setTab('url')" style="display:flex; align-items:center; gap:8px; padding:8px 16px; border-radius:var(--radius-md); background:transparent; border:1px solid transparent; color:var(--text-secondary); font-weight:600; font-size:0.85rem;">
-          🔗 Social / News Link
+        <button id="tab-url" class="tab-btn" role="tab" aria-selected="false" onclick="setTab('url')">
+          Web Article / Media URL
         </button>
-      </div>
+      </nav>
 
       <div id="pane-text">
-        <textarea id="claim-text" oninput="onUserInput()" rows="4" placeholder="Paste suspicious WhatsApp forward, viral message, or claim text here..." style="width:100%; padding:14px 18px; font-size:0.95rem; line-height:1.6; resize:vertical;"></textarea>
+        <textarea id="claim-text" class="input-textarea" rows="4" placeholder="Paste forwarded message, headline, or suspicious claim to analyze..." aria-label="Message Input"></textarea>
       </div>
 
-      <div id="pane-image" style="display:none; border:2px dashed var(--border-color); border-radius:var(--radius-md); padding:30px; text-align:center; background:rgba(10,15,26,0.4);">
-        <div id="image-empty">
-          <div style="font-size:2rem; margin-bottom:8px;">🖼️</div>
-          <p style="font-weight:600; margin-bottom:6px;">Upload or drop WhatsApp forward screenshot / newspaper clipping</p>
-          <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:14px;">SatyaSetu extracts text via Vision OCR and feeds claims to the verification engine</p>
-          <label for="img-file" style="display:inline-block; padding:8px 18px; border-radius:var(--radius-md); background:rgba(56,189,248,0.15); color:#38bdf8; border:1px solid rgba(56,189,248,0.3); font-size:0.85rem; font-weight:600; cursor:pointer;">
-            Browse Image
-          </label>
-          <input type="file" id="img-file" accept="image/*" onchange="handleImage(event)" style="display:none;">
-        </div>
-        <div id="image-preview-container" style="display:none;">
-          <img id="img-preview" src="" style="max-height:220px; border-radius:8px; margin-bottom:10px; border:1px solid var(--border-color);">
-          <div><button onclick="clearImage()" style="color:#f87171; background:transparent; font-size:0.8rem;">Remove Image</button></div>
+      <div id="pane-image" style="display:none;">
+        <div class="upload-dropzone">
+          <div id="image-empty">
+            <p style="font-weight:600; margin-bottom:6px;">Upload WhatsApp forward screenshot or newspaper clipping</p>
+            <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:16px;">OCR extracts textual claims and submits them to the multi-tier verification engine</p>
+            <label for="img-file" class="btn btn-secondary">Browse Image</label>
+            <input type="file" id="img-file" accept="image/*" onchange="handleImage(event)" style="display:none;">
+          </div>
+          <div id="image-preview-container" style="display:none;">
+            <img id="img-preview" src="" alt="Screenshot preview" style="max-height:220px; border-radius:8px; margin-bottom:10px; border:1px solid var(--border-medium);">
+            <div><button onclick="clearImage()" class="btn btn-ghost" style="color:#ef4444; font-size:0.8rem;">Remove Image</button></div>
+          </div>
         </div>
       </div>
 
       <div id="pane-url" style="display:none;">
-        <input type="url" id="claim-url" oninput="onUserInput()" placeholder="https://twitter.com/... or https://news.com/article..." style="width:100%; padding:14px 18px; font-size:0.95rem;">
+        <input type="url" id="claim-url" class="input-text" placeholder="https://example.com/article or social link..." aria-label="Article URL Input">
       </div>
 
-      <div style="display:flex; align-items:center; justify-content:space-between; margin-top:16px;">
-        <button onclick="clearAll()" style="padding:8px 14px; background:transparent; color:var(--text-muted); font-size:0.8rem;">Clear Input</button>
-        <button id="btn-submit" onclick="executeVerify()" style="display:flex; align-items:center; gap:10px; padding:12px 28px; border-radius:var(--radius-md); background:linear-gradient(135deg, #38bdf8 0%, #2563eb 100%); color:#ffffff; font-weight:700; font-size:0.95rem; box-shadow:0 4px 20px rgba(56,189,248,0.35);">
-          ✨ <span>Verify Authenticity & Dissect Manipulation</span>
+      <div class="analyzer-actions">
+        <button onclick="clearAll()" class="btn btn-ghost" aria-label="Clear inputs">Clear Input</button>
+        <button id="btn-submit" onclick="executeVerify()" class="btn btn-primary" aria-label="Execute Verification Pipeline">
+          Verify Claim Authenticity
         </button>
       </div>
-    </div>
+    </section>
 
-    <!-- 3. Pipeline Step Visualizer -->
-    <div id="pipeline-card" class="glass-panel" style="padding:20px 24px; margin-bottom:28px; display:none;">
-      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <span style="color:#38bdf8; font-size:1.1rem;">⚡</span>
-          <h3 style="font-size:0.9rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#cbd5e1;">Multi-Tier Pipeline Execution</h3>
-        </div>
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span id="pipeline-mode" style="font-size:0.75rem; color:#94a3b8;"></span>
-          <span id="pipeline-latency" class="badge badge-neutral"></span>
-        </div>
-      </div>
-      <div id="pipeline-steps-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px;"></div>
-    </div>
+    <!-- Telemetry & Verification Output Area -->
+    <section id="results-area" class="results-container" aria-label="Verification Results Area">
 
-    <!-- 4. Results Section -->
-    <div id="results-area" style="display:none;">
       <!-- Verdict Banner -->
-      <div id="verdict-card" class="glass-panel" style="padding:24px; margin-bottom:28px;">
-        <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; padding-bottom:20px; border-bottom:1px solid var(--border-color); margin-bottom:20px;">
-          <div style="display:flex; align-items:center; gap:14px;">
-            <div id="verdict-icon-container" style="width:48px; height:48px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; font-size:1.5rem;"></div>
+      <article id="verdict-card" class="card verdict-banner">
+        <div class="verdict-header">
+          <div class="verdict-left">
+            <div id="verdict-icon-container" class="verdict-badge-box">?</div>
             <div>
-              <div style="display:flex; align-items:center; gap:10px;">
-                <span id="verdict-title" style="font-size:1.4rem; font-weight:800; letter-spacing:-0.01em;"></span>
-                <span id="verdict-risk-badge" class="badge"></span>
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+                <h2 id="verdict-title" class="verdict-title">Evaluating...</h2>
+                <span id="verdict-risk-badge" class="badge badge-neutral">Analysis Pending</span>
               </div>
-              <p style="font-size:0.8rem; color:var(--text-secondary);">Cross-referenced against Certified IFCN Fact-Check Archive & Official Gazettes</p>
+              <p style="font-size:0.85rem; color:var(--text-muted);">Deterministic Hybrid Assessment via FactCheck API & Authoritative Media Grounding</p>
             </div>
           </div>
 
-          <div style="display:flex; align-items:center; gap:16px; background:rgba(255,255,255,0.03); border:1px solid var(--border-color); padding:10px 18px; border-radius:var(--radius-lg);">
-            <div>
-              <div style="font-size:0.7rem; text-transform:uppercase; color:var(--text-muted); font-weight:700;">Credibility Index</div>
-              <div style="display:flex; align-items:baseline; gap:4px;">
-                <span id="score-text" style="font-size:1.8rem; font-weight:800; font-family:var(--font-mono);"></span>
-                <span style="font-size:0.9rem; color:var(--text-muted);">/ 100</span>
-              </div>
-            </div>
-            <div style="width:64px; height:8px; background:#1e293b; borderRadius:4px; overflow:hidden;">
-              <div id="score-bar" style="height:100%; border-radius:4px; transition:width 0.8s ease;"></div>
+          <div class="credibility-score-box">
+            <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.04em; color:var(--text-muted); font-weight:700;">Credibility Index</div>
+            <div id="score-text" class="credibility-score-num">--%</div>
+            <div class="score-progress-track">
+              <div id="score-bar" class="score-progress-bar" style="width:0%;"></div>
             </div>
           </div>
         </div>
 
-        <!-- Synthesis Summary -->
-        <div style="margin-bottom:24px;">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-            <h4 style="font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#cbd5e1;">Executive Synthesis</h4>
+        <div style="border-top:1px solid var(--border-subtle); padding-top:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <div style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.05em; font-weight:700; color:var(--text-secondary);">Executive Summary</div>
             <div style="display:flex; gap:6px;">
-              <button id="lang-en" onclick="setLang('en')" style="padding:4px 10px; border-radius:6px; font-size:0.75rem; font-weight:600; background:rgba(56,189,248,0.2); color:#38bdf8; border:1px solid rgba(56,189,248,0.4);">English</button>
-              <button id="lang-hi" onclick="setLang('hi')" style="padding:4px 10px; border-radius:6px; font-size:0.75rem; font-weight:600; background:transparent; color:var(--text-muted); border:1px solid transparent;">हिंदी (Hindi)</button>
+              <button id="lang-en" onclick="setLang('en')" class="btn btn-secondary active" style="padding:3px 10px; font-size:0.72rem;">English</button>
+              <button id="lang-hi" onclick="setLang('hi')" class="btn btn-secondary" style="padding:3px 10px; font-size:0.72rem;">हिंदी</button>
             </div>
           </div>
-          <div id="summary-box" style="padding:16px 20px; border-radius:var(--radius-md); background:rgba(10,15,26,0.6); border:1px solid var(--border-color); font-size:0.95rem; line-height:1.65;"></div>
+          <p id="summary-box" style="font-size:0.92rem; color:var(--text-primary); line-height:1.6;"></p>
         </div>
+      </article>
 
-        <!-- Atomic Claims List -->
-        <div>
-          <h4 style="font-size:0.85rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#cbd5e1; margin-bottom:10px;">Atomic Claims Deconstruction</h4>
-          <div id="atomic-claims-list" style="display:flex; flex-direction:column; gap:8px;"></div>
-        </div>
+      <!-- Details Multi-Column Grid -->
+      <div class="detail-grid">
+
+        <!-- Column 1: Atomic Claims Breakdown -->
+        <article class="card detail-card">
+          <h3 class="detail-card-title">Isolated Atomic Claims</h3>
+          <div id="atomic-claims-list"></div>
+        </article>
+
+        <!-- Column 2: Psychological Deception Telemetry -->
+        <article class="card detail-card">
+          <h3 class="detail-card-title">Deception & Viral Telemetry</h3>
+          <div class="metric-row">
+            <div class="metric-meta">
+              <span>Manufactured Urgency</span>
+              <span id="metric-urgency" style="font-family:var(--font-mono); font-weight:700;">--%</span>
+            </div>
+            <div class="metric-track"><div id="bar-urgency" class="metric-bar" style="width:0%;"></div></div>
+          </div>
+
+          <div class="metric-row">
+            <div class="metric-meta">
+              <span>Emotional / Fear Intensity</span>
+              <span id="metric-emotion" style="font-family:var(--font-mono); font-weight:700;">--%</span>
+            </div>
+            <div class="metric-track"><div id="bar-emotion" class="metric-bar" style="width:0%;"></div></div>
+          </div>
+
+          <div class="metric-row">
+            <div class="metric-meta">
+              <span>Sensationalism & Typography</span>
+              <span id="metric-sensational" style="font-family:var(--font-mono); font-weight:700;">--%</span>
+            </div>
+            <div class="metric-track"><div id="bar-sensational" class="metric-bar" style="width:0%;"></div></div>
+          </div>
+
+          <div style="margin-top:16px;">
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:6px; font-weight:600;">Detected Deception Patterns:</div>
+            <div id="tactics-list"></div>
+          </div>
+
+          <div style="margin-top:14px;">
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:6px; font-weight:600;">Journalistic Integrity Anchors:</div>
+            <div id="missing-list"></div>
+          </div>
+        </article>
       </div>
 
-      <!-- Manipulation Markers -->
-      <div id="manipulation-card" class="glass-panel" style="padding:24px; margin-bottom:28px;">
-        <div style="display:flex; align-items:center; gap:8px; margin-bottom:18px;">
-          <span style="font-size:1.2rem;">⚡</span>
-          <div>
-            <h3 style="font-size:1rem; font-weight:700; color:#f8fafc;">Psychological Manipulation & Deception Analysis</h3>
-            <p style="font-size:0.75rem; color:var(--text-muted);">Linguistic telemetry explaining why this forward was engineered to trigger emotional sharing</p>
+      <!-- Grounding Evidence Table -->
+      <article class="card detail-card" style="margin-bottom:24px;">
+        <h3 class="detail-card-title">Corroboration & Fact-Check Records</h3>
+        <div id="evidence-container"></div>
+      </article>
+
+      <!-- WhatsApp Viral Neutralizer Simulator -->
+      <article class="card detail-card" style="margin-bottom:24px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+          <h3 class="detail-card-title" style="margin-bottom:0;">WhatsApp Neutralizer Card Simulator</h3>
+          <div style="display:flex; gap:8px;">
+            <button onclick="copyDebunk('en')" class="btn btn-secondary" style="font-size:0.78rem;">Copy English Card</button>
+            <button onclick="copyDebunk('hi')" class="btn btn-secondary" style="font-size:0.78rem;">हिंदी कार्ड कॉपी करें</button>
           </div>
         </div>
 
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-bottom:20px;">
-          <div style="padding:14px 16px; border-radius:var(--radius-md); background:rgba(255,255,255,0.02); border:1px solid var(--border-color);">
-            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-              <span style="font-size:0.8rem; font-weight:600; color:#cbd5e1;">Manufactured Urgency</span>
-              <span id="metric-urgency" style="font-size:0.85rem; font-weight:800; font-family:var(--font-mono);"></span>
-            </div>
-            <div style="height:6px; background:#1e293b; border-radius:3px; overflow:hidden;"><div id="bar-urgency" style="height:100%;"></div></div>
+        <div class="wa-container">
+          <div class="wa-bubble wa-bubble-incoming">
+            <div style="font-size:0.72rem; color:#8696a0; margin-bottom:3px;">Forwarded message</div>
+            <div id="wa-incoming-text">Viral message snippet...</div>
           </div>
-          <div style="padding:14px 16px; border-radius:var(--radius-md); background:rgba(255,255,255,0.02); border:1px solid var(--border-color);">
-            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-              <span style="font-size:0.8rem; font-weight:600; color:#cbd5e1;">Emotional Intensity</span>
-              <span id="metric-emotion" style="font-size:0.85rem; font-weight:800; font-family:var(--font-mono);"></span>
-            </div>
-            <div style="height:6px; background:#1e293b; border-radius:3px; overflow:hidden;"><div id="bar-emotion" style="height:100%;"></div></div>
-          </div>
-          <div style="padding:14px 16px; border-radius:var(--radius-md); background:rgba(255,255,255,0.02); border:1px solid var(--border-color);">
-            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-              <span style="font-size:0.8rem; font-weight:600; color:#cbd5e1;">Sensational Typography</span>
-              <span id="metric-sensational" style="font-size:0.85rem; font-weight:800; font-family:var(--font-mono);"></span>
-            </div>
-            <div style="height:6px; background:#1e293b; border-radius:3px; overflow:hidden;"><div id="bar-sensational" style="height:100%;"></div></div>
+          <div class="wa-bubble wa-bubble-debunk">
+            <div id="wa-debunk-headline" style="font-weight:700; margin-bottom:6px; font-size:0.92rem;">Evaluating...</div>
+            <div id="wa-debunk-bullets" style="font-size:0.82rem; line-height:1.45; margin-bottom:8px;"></div>
+            <div id="wa-debunk-tag" style="font-size:0.7rem; color:#8696a0; text-align:right;">SatyaSetu Intelligence</div>
           </div>
         </div>
+      </article>
 
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px;">
-          <div style="padding:14px 16px; border-radius:var(--radius-md); background:rgba(239,68,68,0.04); border:1px solid rgba(239,68,68,0.15);">
-            <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:#f87171; margin-bottom:8px;">Identified Deception Tactics</div>
-            <div id="tactics-list" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
-          </div>
-          <div style="padding:14px 16px; border-radius:var(--radius-md); background:rgba(245,158,11,0.04); border:1px solid rgba(245,158,11,0.15);">
-            <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:#fbbf24; margin-bottom:8px;">Missing Journalistic Anchors</div>
-            <div id="missing-list" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
-          </div>
-        </div>
-      </div>
+      <!-- Verification Protocol Checklist -->
+      <article class="card detail-card">
+        <h3 class="detail-card-title">Citizen Verification Protocol</h3>
+        <div id="checklist-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px;"></div>
+      </article>
 
-      <!-- Dual Grid: Evidence Provenance & WhatsApp Simulator -->
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(360px, 1fr)); gap:24px; margin-bottom:28px;">
-        <!-- Evidence Table -->
-        <div class="glass-panel" style="padding:24px;">
-          <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
-            <span style="font-size:1.2rem;">🛡️</span>
-            <div>
-              <h3 style="font-size:1rem; font-weight:700; color:#f8fafc;">Credible Source Verification</h3>
-              <p style="font-size:0.75rem; color:var(--text-muted);">Certified IFCN Signatories & Official Gazettes</p>
-            </div>
-          </div>
-          <div id="evidence-container" style="display:flex; flex-direction:column; gap:10px;"></div>
-        </div>
+    </section>
 
-        <!-- WhatsApp Simulator (Item 3) -->
-        <div id="whatsapp-simulator" class="glass-panel" style="padding:24px; scroll-margin-top:90px;">
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span style="font-size:1.2rem;">💬</span>
-              <div>
-                <h3 style="font-size:1rem; font-weight:700; color:#f8fafc;">WhatsApp Viral Neutralizer</h3>
-                <p style="font-size:0.75rem; color:var(--text-muted);">1-Click Counter-Debunk Forward Preview</p>
-              </div>
-            </div>
-            <div style="display:flex; gap:6px;">
-              <button onclick="copyDebunk('en')" style="padding:6px 12px; border-radius:var(--radius-md); background:rgba(56,189,248,0.12); color:#38bdf8; border:1px solid rgba(56,189,248,0.3); font-size:0.75rem; font-weight:600;">Copy English</button>
-              <button onclick="copyDebunk('hi')" style="padding:6px 12px; border-radius:var(--radius-md); background:rgba(249,115,22,0.12); color:#fb923c; border:1px solid rgba(249,115,22,0.3); font-size:0.75rem; font-weight:600;">Copy हिंदी</button>
-            </div>
-          </div>
-
-          <!-- Simulated Phone View -->
-          <div style="max-width:480px; margin:0 auto; background:#0b141a; border-radius:16px; border:2px solid #202c33; overflow:hidden; box-shadow:0 12px 35px rgba(0,0,0,0.8);">
-            <div style="background:#202c33; padding:10px 14px; display:flex; align-items:center; gap:10px;">
-              <div style="width:34px; height:34px; border-radius:50%; background:#00a884; display:flex; align-items:center; justify-content:center;">👥</div>
-              <div>
-                <div style="font-weight:600; font-size:0.85rem; color:#e9edef;">Family WhatsApp Group (42)</div>
-                <div style="font-size:0.65rem; color:#8696a0;">online</div>
-              </div>
-            </div>
-            <div style="padding:14px; display:flex; flex-direction:column; gap:12px; background:radial-gradient(circle, #0b141a 0%, #080f14 100%);">
-              <!-- Forwarded Bubble -->
-              <div style="max-width:85%; align-self:flex-start; background:#202c33; border-radius:8px; padding:10px 12px;">
-                <div style="font-size:0.65rem; color:#8696a0; font-style:italic; margin-bottom:2px;">↪ Forwarded many times</div>
-                <p id="wa-incoming-text" style="font-size:0.8rem; color:#e9edef; line-height:1.4;"></p>
-                <div style="text-align:right; font-size:0.6rem; color:#8696a0; margin-top:4px;">10:42 AM</div>
-              </div>
-
-              <!-- SatyaSetu Debunk Card Bubble -->
-              <div style="max-width:92%; align-self:flex-end; background:#005c4b; border-radius:8px; padding:12px 14px; border-left:4px solid #f87171;">
-                <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-                  <span style="font-size:0.7rem; font-weight:800; color:#f87171;">SATYA SETU FACT CHECK VERDICT</span>
-                </div>
-                <div id="wa-debunk-headline" style="font-size:0.82rem; font-weight:700; color:#fff; margin-bottom:4px;"></div>
-                <div id="wa-debunk-bullets" style="font-size:0.75rem; color:#d1fae5; line-height:1.35; margin-bottom:6px;"></div>
-                <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:4px; font-size:0.65rem; color:#6ee7b7; display:flex; justify-content:space-between;">
-                  <span id="wa-debunk-tag"></span>
-                  <span style="color:#8696a0;">10:43 AM • Read</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 5. Citizen Protocol Checklist (Item 3) -->
-      <div id="protocol" class="glass-panel" style="padding:24px; margin-bottom:28px; scroll-margin-top:90px;">
-        <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
-          <span style="font-size:1.2rem;">📋</span>
-          <div>
-            <h3 style="font-size:1rem; font-weight:700; color:#f8fafc;">Pre-Forwarding Citizen Protocol (S.A.T.Y.A. Verification Checklist)</h3>
-            <p style="font-size:0.75rem; color:var(--text-muted);">Expected Output: User guidance on verifying information before sharing it</p>
-          </div>
-        <div id="checklist-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px;"></div>
-      </div>
-
-      <!-- 6. The Engineering & Research Team (Item 20) -->
-      <section id="team" class="glass-panel" style="padding:28px 24px; margin-bottom:28px; scroll-margin-top:90px;">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
-          <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:1.4rem;">👥</span>
-            <div>
-              <h3 style="font-size:1.15rem; font-weight:800; color:#f8fafc;">The Engineering & Research Team</h3>
-              <p style="font-size:0.75rem; color:var(--text-muted);">Problem Statement 11 Participants (Team Size: 5 Developers & Researchers)</p>
-            </div>
-          </div>
-          <span class="badge badge-true" style="font-size:0.7rem;">Hackathon Team 202611</span>
-        </div>
-
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:18px;">
-          <!-- Member 1: Team Leader -->
-          <div class="glass-panel-interactive" style="padding:20px 16px; text-align:center;">
-            <div style="width:76px; height:76px; border-radius:50%; margin:0 auto 12px auto; background:linear-gradient(135deg, #ec4899 0%, #be185d 100%); display:flex; align-items:center; justify-content:center; font-size:2rem; border:2px solid #ec4899; box-shadow:0 0 15px rgba(236,72,153,0.3);">
-              👩‍💼
-            </div>
-            <div style="font-weight:700; font-size:1rem; color:#f8fafc; margin-bottom:2px;">Anshika Pandey</div>
-            <div style="font-size:0.75rem; color:#f472b6; font-weight:600; margin-bottom:6px;">Team Leader & Strategic Presenter</div>
-            <p style="font-size:0.75rem; color:var(--text-muted); line-height:1.4; margin-bottom:12px;">Lead stage presenter, product vision & strategy, civic impact narrative, and central Q&A defense anchor.</p>
-            <div style="display:flex; justify-content:center; gap:6px; flex-wrap:wrap;">
-              <span class="badge badge-true" style="font-size:0.65rem;">Team Lead</span>
-              <span class="badge badge-neutral" style="font-size:0.65rem;">Product Strategy</span>
-              <span class="badge badge-neutral" style="font-size:0.65rem;">Stage Anchor</span>
-            </div>
-          </div>
-
-          <!-- Member 2 -->
-          <div class="glass-panel-interactive" style="padding:20px 16px; text-align:center;">
-            <div style="width:76px; height:76px; border-radius:50%; margin:0 auto 12px auto; background:linear-gradient(135deg, #38bdf8 0%, #1d4ed8 100%); display:flex; align-items:center; justify-content:center; font-size:2rem; border:2px solid #38bdf8; box-shadow:0 0 15px rgba(56,189,248,0.3);">
-              👨‍💻
-            </div>
-            <div style="font-weight:700; font-size:1rem; color:#f8fafc; margin-bottom:2px;">Srijan Srivastava</div>
-            <div style="font-size:0.75rem; color:#38bdf8; font-weight:600; margin-bottom:6px;">Full-Stack System Architect</div>
-            <p style="font-size:0.75rem; color:var(--text-muted); line-height:1.4; margin-bottom:12px;">FastAPI server, cloud deployment pipelines, verification orchestrator, and real-time integration.</p>
-            <div style="display:flex; justify-content:center; gap:6px; flex-wrap:wrap;">
-              <span class="badge badge-neutral" style="font-size:0.65rem;">FastAPI</span>
-              <span class="badge badge-neutral" style="font-size:0.65rem;">Cloud Ops</span>
-              <span class="badge badge-neutral" style="font-size:0.65rem;">Architecture</span>
-            </div>
-          </div>
-
-          <!-- Member 3 -->
-          <div class="glass-panel-interactive" style="padding:20px 16px; text-align:center;">
-            <div style="width:76px; height:76px; border-radius:50%; margin:0 auto 12px auto; background:linear-gradient(135deg, #f97316 0%, #ea580c 100%); display:flex; align-items:center; justify-content:center; font-size:2rem; border:2px solid #f97316; box-shadow:0 0 15px rgba(249,115,22,0.3);">
-              👨‍🔬
-            </div>
-            <div style="font-weight:700; font-size:1rem; color:#f8fafc; margin-bottom:2px;">Amit Kumar Rajput</div>
-            <div style="font-size:0.75rem; color:#fb923c; font-weight:600; margin-bottom:6px;">Fact-Checking & Knowledge Architect</div>
-            <p style="font-size:0.75rem; color:var(--text-muted); line-height:1.4; margin-bottom:12px;">Google Fact Check Tools API parser, certified IFCN ClaimReview grounding, and regional gazettes.</p>
-            <div style="display:flex; justify-content:center; gap:6px; flex-wrap:wrap;">
-              <span class="badge badge-neutral" style="font-size:0.65rem;">ClaimReview</span>
-              <span class="badge badge-neutral" style="font-size:0.65rem;">PIB Schema</span>
-              <span class="badge badge-neutral" style="font-size:0.65rem;">Fact Engine</span>
-            </div>
-          </div>
-
-          <!-- Member 4 -->
-          <div class="glass-panel-interactive" style="padding:20px 16px; text-align:center;">
-            <div style="width:76px; height:76px; border-radius:50%; margin:0 auto 12px auto; background:linear-gradient(135deg, #10b981 0%, #059669 100%); display:flex; align-items:center; justify-content:center; font-size:2rem; border:2px solid #10b981; box-shadow:0 0 15px rgba(168,85,247,0.3);">
-              👨‍🎨
-            </div>
-            <div style="font-weight:700; font-size:1rem; color:#f8fafc; margin-bottom:2px;">Akhilesh Sharma</div>
-            <div style="font-size:0.75rem; color:#34d399; font-weight:600; margin-bottom:6px;">Frontend & WhatsApp Simulator Systems</div>
-            <p style="font-size:0.75rem; color:var(--text-muted); line-height:1.4; margin-bottom:12px;">Stage screen driver (Speaker B), live interactive UI, WhatsApp thread simulator, and debunk cards.</p>
-            <div style="display:flex; justify-content:center; gap:6px; flex-wrap:wrap;">
-              <span class="badge badge-neutral" style="font-size:0.65rem;">React UI</span>
-              <span class="badge badge-neutral" style="font-size:0.65rem;">WhatsApp Cards</span>
-              <span class="badge badge-neutral" style="font-size:0.65rem;">Stage Driver</span>
-            </div>
-          </div>
-
-          <!-- Member 5 -->
-          <div class="glass-panel-interactive" style="padding:20px 16px; text-align:center;">
-            <div style="width:76px; height:76px; border-radius:50%; margin:0 auto 12px auto; background:linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); display:flex; align-items:center; justify-content:center; font-size:2rem; border:2px solid #a855f7; box-shadow:0 0 15px rgba(168,85,247,0.3);">
-              👨‍⚖️
-            </div>
-            <div style="font-weight:700; font-size:1rem; color:#f8fafc; margin-bottom:2px;">Suryansh Pandey</div>
-            <div style="font-size:0.75rem; color:#c084fc; font-weight:600; margin-bottom:6px;">AI, Vision & Deception Telemetry</div>
-            <p style="font-size:0.75rem; color:var(--text-muted); line-height:1.4; margin-bottom:12px;">Gemini 1.5 Flash Vision OCR, manufactured urgency scoring, chrome extension, and S.A.T.Y.A. Protocol.</p>
-            <div style="display:flex; justify-content:center; gap:6px; flex-wrap:wrap;">
-              <span class="badge badge-neutral" style="font-size:0.65rem;">Vision OCR</span>
-              <span class="badge badge-neutral" style="font-size:0.65rem;">Deception Rules</span>
-              <span class="badge badge-neutral" style="font-size:0.65rem;">Civic Telemetry</span>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
   </main>
 
-  <!-- Modal for API Key -->
+  <!-- Application Footer -->
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <div>
+        <strong>SatyaSetu</strong> • Institutional Digital Integrity Platform
+      </div>
+      <div>
+        Certified ClaimReview Schemas (IFCN) • Live Media Grounding • Zero-Retention Privacy
+      </div>
+    </div>
+  </footer>
+
+  <!-- Settings / API Configuration Modal -->
   <div id="key-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); align-items:center; justify-content:center; z-index:100;">
-    <div class="glass-panel" style="width:480px; padding:24px;">
-      <h3 style="font-size:1.15rem; margin-bottom:8px;">🔑 Configure Gemini API Key</h3>
+    <div class="card" style="width:480px; padding:24px;">
+      <h3 style="font-size:1.15rem; margin-bottom:8px;">Engine Configuration</h3>
       <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:16px;">
-        SatyaSetu operates fully offline using verified seed debunks and IFCN ClaimReview tools. To enable live multimodal Gemini 1.5 Flash Vision OCR, enter your Google AI Studio key:
+        SatyaSetu operates automatically with local SQLite caching and live news grounding. To enable live multimodal Gemini Vision OCR on uploaded screenshots, specify a Google AI Studio key:
       </p>
-      <input type="password" id="gemini-key-input" placeholder="AIzaSy..." style="width:100%; padding:10px 14px; font-size:0.9rem; margin-bottom:18px;">
+      <input type="password" id="gemini-key-input" class="input-text" placeholder="AIzaSy..." style="margin-bottom:18px;">
       <div style="display:flex; justify-content:flex-end; gap:10px;">
-        <button onclick="toggleKeyModal()" style="padding:8px 16px; background:transparent; color:var(--text-secondary); border:1px solid var(--border-color); border-radius:var(--radius-md);">Cancel</button>
-        <button onclick="saveApiKey()" style="padding:8px 20px; background:#38bdf8; color:#07090e; font-weight:700; border-radius:var(--radius-md);">Save Key</button>
+        <button onclick="toggleKeyModal()" class="btn btn-secondary">Cancel</button>
+        <button onclick="saveApiKey()" class="btn btn-primary">Save Key</button>
       </div>
     </div>
   </div>
 
-  <footer style="padding:24px; border-top:1px solid var(--border-color); text-align:center; font-size:0.8rem; color:var(--text-muted); background:rgba(7,9,14,0.95);">
-    <div style="display:flex; justify-content:center; align-items:center; gap:16px; margin-bottom:8px; flex-wrap:wrap;">
-      <strong>SatyaSetu</strong> • Built for TrustAI: Tackling Digital Misinformation (PS ID: 202611)
-      <span>|</span>
-      <a href="/404" target="_blank" style="color:#38bdf8; text-decoration:underline;">Test Custom 404 Page (Item 1)</a>
-    </div>
-    <div style="margin-top:4px; font-size:0.75rem; color:#64748b;">Combines Google Fact Check Tools API (IFCN Schema) • Multimodal Vision OCR • Regional Indian Civic Grounding</div>
-  </footer>
+  <div id="toast" style="display:none; position:fixed; bottom:24px; right:24px; padding:12px 20px; border-radius:8px; background:#0284c7; color:#fff; font-size:0.85rem; font-weight:600; box-shadow:0 4px 15px rgba(0,0,0,0.5); z-index:200;"></div>
 
-
-  <script>
-    let activeTab = 'text';
-    let currentResult = null;
-    let selectedScenarioId = 'unesco-anthem';
-    let activeLang = 'en';
-    let userApiKey = localStorage.getItem('SATYA_GEMINI_KEY') || '';
-
-    const SCENARIO_TEXTS = {
-      'unesco-anthem': "Great news for every proud Indian! 🇮🇳 UNESCO has just officially announced that 'Jana Gana Mana' has been declared the BEST NATIONAL ANTHEM in the world! No other country's anthem got this honour. Please forward this message to at least 10 people and all your groups right now to show your patriotism! Jai Hind! Vande Mataram!",
-      'rbi-500-note': "WARNING! Check your ₹500 notes immediately! If the green security strip is closer to Mahatma Gandhi's photo instead of RBI Governor's signature, it is 100% FAKE! Share this alert with all your family groups before you lose money!",
-      'salt-shortage': "URGENT ALERT: Severe salt shortage across Delhi and Bihar! Salt prices have jumped from ₹20 to ₹400 per kg today. Markets are running out. Go buy 10 packets immediately before all grocery stores shut down tonight!",
-      'cbse-exam-circular': "CBSE Board Examination 2026: Official notification and date sheet for Class 10 and 12 published. Candidates can download official circular from cbse.gov.in."
-    };
-
-    function toggleKeyModal() {
-      const modal = document.getElementById('key-modal');
-      modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
-    }
-
-    function saveApiKey() {
-      userApiKey = document.getElementById('gemini-key-input').value.trim();
-      localStorage.setItem('SATYA_GEMINI_KEY', userApiKey);
-      toggleKeyModal();
-      showToast('API Key saved successfully!');
-    }
-
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.innerText = msg;
-      t.style.display = 'block';
-      setTimeout(() => t.style.display = 'none', 3000);
-    }
-
-    function onUserInput() {
-      selectedScenarioId = null;
-    }
-
-    function setTab(tab) {
-      activeTab = tab;
-      if (tab !== 'text') {
-        selectedScenarioId = null;
-      }
-      ['text', 'image', 'url'].forEach(t => {
-        document.getElementById(`pane-${t}`).style.display = t === tab ? 'block' : 'none';
-        const btn = document.getElementById(`tab-${t}`);
-        if (t === tab) {
-          btn.style.background = 'rgba(56,189,248,0.15)';
-          btn.style.borderColor = 'rgba(56,189,248,0.3)';
-          btn.style.color = '#38bdf8';
-        } else {
-          btn.style.background = 'transparent';
-          btn.style.borderColor = 'transparent';
-          btn.style.color = 'var(--text-secondary)';
-        }
-      });
-    }
-
-    let imageBase64Data = '';
-    function handleImage(e) {
-      selectedScenarioId = null;
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          imageBase64Data = reader.result;
-          document.getElementById('img-preview').src = reader.result;
-          document.getElementById('image-empty').style.display = 'none';
-          document.getElementById('image-preview-container').style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-
-    function clearImage() {
-      imageBase64Data = '';
-      document.getElementById('img-file').value = '';
-      document.getElementById('image-empty').style.display = 'block';
-      document.getElementById('image-preview-container').style.display = 'none';
-      selectedScenarioId = null;
-    }
-
-    function focusInput() {
-      setTab('text');
-      setTimeout(() => {
-        const el = document.getElementById('claim-text');
-        if (el) {
-          el.focus();
-          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      }, 50);
-    }
-
-    function clearAll() {
-      document.getElementById('claim-text').value = '';
-      document.getElementById('claim-url').value = '';
-      clearImage();
-      selectedScenarioId = null;
-      document.title = "SatyaSetu — AI Misinformation & Fact-Checking Engine";
-    }
-
-    async function selectScenario(scenarioId) {
-      selectedScenarioId = scenarioId;
-      setTab('text');
-      const sampleText = SCENARIO_TEXTS[scenarioId] || '';
-      document.getElementById('claim-text').value = sampleText;
-      await executeVerify();
-    }
-
-    async function executeVerify() {
-      const btn = document.getElementById('btn-submit');
-      btn.innerHTML = '⏳ Interrogating Claim Database...';
-      btn.disabled = true;
-      document.title = "SatyaSetu — ⏳ Verifying Claim...";
-
-      const textVal = (document.getElementById('claim-text').value || '').trim();
-      const urlVal = (document.getElementById('claim-url').value || '').trim();
-
-      // Check if user has entered custom text or modified the preset
-      if (activeTab === 'text') {
-        if (!textVal) {
-          alert('Please enter a claim, forward, or headline to verify.');
-          btn.innerHTML = '✨ Verify Authenticity & Dissect Manipulation';
-          btn.disabled = false;
-          document.title = "SatyaSetu — AI Misinformation & Fact-Checking Engine";
-          return;
-        }
-        if (selectedScenarioId && SCENARIO_TEXTS[selectedScenarioId] !== textVal) {
-          selectedScenarioId = null;
-        }
-      } else if (activeTab === 'url') {
-        if (!urlVal) {
-          alert('Please enter a URL to verify.');
-          btn.innerHTML = '✨ Verify Authenticity & Dissect Manipulation';
-          btn.disabled = false;
-          return;
-        }
-        selectedScenarioId = null;
-      } else if (activeTab === 'image') {
-        if (!imageBase64Data) {
-          alert('Please upload an image screenshot to verify.');
-          btn.innerHTML = '✨ Verify Authenticity & Dissect Manipulation';
-          btn.disabled = false;
-          return;
-        }
-        selectedScenarioId = null;
-      }
-
-      const payload = {
-        scenario_id: selectedScenarioId || undefined,
-        text: activeTab === 'text' ? textVal : undefined,
-        url: activeTab === 'url' ? urlVal : undefined,
-        image_base64: activeTab === 'image' ? imageBase64Data : undefined,
-        api_key_override: userApiKey || undefined
-      };
-
-      try {
-        const res = await fetch('/api/verify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        const data = await res.json();
-        currentResult = data;
-        renderResults(data);
-      } catch (err) {
-        alert('Pipeline execution error. Make sure FastAPI server is running.');
-      } finally {
-        btn.innerHTML = '✨ Verify Authenticity & Dissect Manipulation';
-        btn.disabled = false;
-      }
-    }
-
-    function renderResults(res) {
-      // Dynamic Page Title Update: Brand first so tab stays clean
-      document.title = `SatyaSetu — [${res.overall_verdict}] Fact Check`;
-
-      document.getElementById('results-area').style.display = 'block';
-      document.getElementById('pipeline-card').style.display = 'block';
-
-
-      // Pipeline Steps
-      document.getElementById('pipeline-mode').innerText = `Source Mode: ${res.data_source_mode}`;
-      document.getElementById('pipeline-latency').innerText = `⚡ ${res.total_latency_ms}ms total`;
-      const stepsGrid = document.getElementById('pipeline-steps-grid');
-      stepsGrid.innerHTML = '';
-      res.pipeline_steps.forEach((s, idx) => {
-        stepsGrid.innerHTML += `
-          <div style="padding:12px 14px; border-radius:var(--radius-md); background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); display:flex; flex-direction:column; gap:4px;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:0.75rem; font-weight:600; color:#38bdf8;">Stage 0${idx+1}</span>
-              <span style="font-size:0.65rem; font-family:var(--font-mono); color:#64748b;">${s.elapsed_ms}ms</span>
-            </div>
-            <div style="font-size:0.82rem; font-weight:700; color:#f1f5f9;">${s.name}</div>
-            <div style="font-size:0.72rem; color:#94a3b8; line-height:1.3;">${s.detail}</div>
-          </div>
-        `;
-      });
-
-      // Verdict styling
-      const isFalse = res.overall_verdict.includes('FALSE') || res.overall_verdict.includes('FABRICATED') || res.overall_verdict.includes('HOAX');
-      const isTrue = res.overall_verdict.includes('TRUE') || res.overall_verdict.includes('AUTHENTIC') || res.overall_verdict.includes('VERIFIED');
-      const col = isFalse ? '#ef4444' : isTrue ? '#10b981' : '#f59e0b';
-      const bg = isFalse ? 'rgba(239,68,68,0.12)' : isTrue ? 'rgba(16,185,129,0.12)' : 'rgba(245,158,11,0.12)';
-
-      const vCard = document.getElementById('verdict-card');
-      vCard.style.borderTop = `4px solid ${col}`;
-      document.getElementById('verdict-icon-container').style.background = bg;
-      document.getElementById('verdict-icon-container').innerText = isFalse ? '⚠️' : isTrue ? '✅' : '❓';
-      
-      const vTitle = document.getElementById('verdict-title');
-      vTitle.innerText = res.overall_verdict;
-      vTitle.style.color = col;
-
-      const rBadge = document.getElementById('verdict-risk-badge');
-      rBadge.className = `badge ${isFalse ? 'badge-false' : isTrue ? 'badge-true' : 'badge-warning'}`;
-      rBadge.innerText = res.risk_level.replace(/_/g, ' ');
-
-      const sText = document.getElementById('score-text');
-      sText.innerText = res.credibility_score;
-      sText.style.color = col;
-
-      const sBar = document.getElementById('score-bar');
-      sBar.style.width = `${res.credibility_score}%`;
-      sBar.style.background = col;
-
-      updateSummaryText();
-
-      // Atomic claims
-      const cList = document.getElementById('atomic-claims-list');
-      cList.innerHTML = '';
-      res.atomic_claims.forEach(c => {
-        cList.innerHTML += `
-          <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-radius:var(--radius-md); background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); font-size:0.85rem;">
-            <div style="display:flex; align-items:center; gap:10px;">
-              <span style="width:22px; height:22px; border-radius:50%; background:rgba(56,189,248,0.15); color:#38bdf8; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700;">${c.id}</span>
-              <div>
-                <span style="color:#f1f5f9; font-weight:500;">${c.text}</span>
-                <div style="font-size:0.75rem; color:#64748b; margin-top:2px;">Target Entity: <strong style="color:#94a3b8;">${c.target_entity}</strong> | Query: <code style="color:#38bdf8;">${c.normalized_query}</code></div>
-              </div>
-            </div>
-            <span class="badge ${c.verdict === 'FALSE' ? 'badge-false' : c.verdict === 'TRUE' ? 'badge-true' : 'badge-neutral'}">${c.verdict}</span>
-          </div>
-        `;
-      });
-
-      // Manipulation Metrics
-      const m = res.manipulation_breakdown;
-      document.getElementById('metric-urgency').innerText = `${m.urgency_score}%`;
-      document.getElementById('metric-urgency').style.color = m.urgency_score > 60 ? '#ef4444' : '#10b981';
-      document.getElementById('bar-urgency').style.width = `${m.urgency_score}%`;
-      document.getElementById('bar-urgency').style.background = m.urgency_score > 60 ? '#ef4444' : '#10b981';
-
-      document.getElementById('metric-emotion').innerText = `${m.emotional_intensity}%`;
-      document.getElementById('metric-emotion').style.color = m.emotional_intensity > 60 ? '#ef4444' : '#10b981';
-      document.getElementById('bar-emotion').style.width = `${m.emotional_intensity}%`;
-      document.getElementById('bar-emotion').style.background = m.emotional_intensity > 60 ? '#ef4444' : '#10b981';
-
-      document.getElementById('metric-sensational').innerText = `${m.sensationalism_score}%`;
-      document.getElementById('metric-sensational').style.color = m.sensationalism_score > 60 ? '#ef4444' : '#10b981';
-      document.getElementById('bar-sensational').style.width = `${m.sensationalism_score}%`;
-      document.getElementById('bar-sensational').style.background = m.sensationalism_score > 60 ? '#ef4444' : '#10b981';
-
-      const tList = document.getElementById('tactics-list');
-      tList.innerHTML = '';
-      m.detected_tactics.forEach(t => tList.innerHTML += `<span class="badge badge-false">${t}</span>`);
-
-      const mList = document.getElementById('missing-list');
-      mList.innerHTML = '';
-      m.missing_elements.forEach(el => mList.innerHTML += `<span class="badge badge-warning">${el}</span>`);
-
-      // Evidence table
-      const evCont = document.getElementById('evidence-container');
-      evCont.innerHTML = '';
-      if (res.certified_evidence && res.certified_evidence.length > 0) {
-        res.certified_evidence.forEach(item => {
-          evCont.innerHTML += `
-            <div style="padding:12px 16px; border-radius:var(--radius-md); background:rgba(255,255,255,0.02); border:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
-              <div>
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-                  <span style="font-weight:700; font-size:0.85rem; color:#38bdf8;">${item.fact_checker}</span>
-                  <span class="badge badge-neutral" style="font-size:0.65rem;">IFCN Signer</span>
-                </div>
-                <p style="font-size:0.8rem; color:#e2e8f0;">"${item.claim_text}"</p>
-              </div>
-              <div style="display:flex; align-items:center; gap:8px;">
-                <span class="badge badge-false">${item.rating}</span>
-                <a href="${item.review_url}" target="_blank" style="color:#38bdf8; font-size:0.75rem; text-decoration:none; padding:4px 8px; border:1px solid rgba(56,189,248,0.3); border-radius:4px;">Debunk Link ↗</a>
-              </div>
-            </div>
-          `;
-        });
-      } else if (res.web_grounding_citations && res.web_grounding_citations.length > 0) {
-        res.web_grounding_citations.forEach(c => {
-          evCont.innerHTML += `
-            <div style="padding:12px 16px; border-radius:var(--radius-md); background:rgba(10,15,26,0.5); border:1px solid var(--border-color);">
-              <div style="font-size:0.75rem; font-weight:700; color:#10b981;">${c.publisher}</div>
-              <div style="font-size:0.85rem; font-weight:600; color:#f8fafc; margin:2px 0;">${c.title}</div>
-              <div style="font-size:0.75rem; color:#94a3b8;">${c.snippet}</div>
-            </div>
-          `;
-        });
-      }
-
-      // WhatsApp Simulator
-      document.getElementById('wa-incoming-text').innerText = res.extracted_text || 'Viral message forward...';
-      document.getElementById('wa-debunk-headline').innerText = res.shareable_card.headline_en;
-      const bCont = document.getElementById('wa-debunk-bullets');
-      bCont.innerHTML = '';
-      res.shareable_card.bullet_points_en.forEach(b => bCont.innerHTML += `<div>• ${b}</div>`);
-      document.getElementById('wa-debunk-tag').innerText = res.shareable_card.verification_source_tag;
-
-      // Citizen Checklist
-      const chkGrid = document.getElementById('checklist-grid');
-      chkGrid.innerHTML = '';
-      res.verification_checklist.forEach((item, idx) => {
-        chkGrid.innerHTML += `
-          <div class="glass-panel-interactive" style="padding:14px 16px; display:flex; gap:12px;">
-            <div style="width:24px; height:24px; border-radius:6px; background:#10b981; display:flex; align-items:center; justify-content:center; color:#fff; font-size:0.8rem; flex-shrink:0;">✓</div>
-            <div>
-              <div style="font-size:0.85rem; font-weight:700; color:#34d399; margin-bottom:4px;">Verification Rule 0${idx+1}</div>
-              <div style="font-size:0.75rem; color:#94a3b8; line-height:1.4;">${item}</div>
-            </div>
-          </div>
-        `;
-      });
-    }
-
-    function setLang(lang) {
-      activeLang = lang;
-      document.getElementById('lang-en').style.background = lang === 'en' ? 'rgba(56,189,248,0.2)' : 'transparent';
-      document.getElementById('lang-en').style.borderColor = lang === 'en' ? 'rgba(56,189,248,0.4)' : 'transparent';
-      document.getElementById('lang-en').style.color = lang === 'en' ? '#38bdf8' : 'var(--text-muted)';
-
-      document.getElementById('lang-hi').style.background = lang === 'hi' ? 'rgba(56,189,248,0.2)' : 'transparent';
-      document.getElementById('lang-hi').style.borderColor = lang === 'hi' ? 'rgba(56,189,248,0.4)' : 'transparent';
-      document.getElementById('lang-hi').style.color = lang === 'hi' ? '#38bdf8' : 'var(--text-muted)';
-
-      updateSummaryText();
-    }
-
-    function updateSummaryText() {
-      if (!currentResult) return;
-      document.getElementById('summary-box').innerText = activeLang === 'en' ? currentResult.debunk_summary_en : currentResult.debunk_summary_hi;
-    }
-
-    function copyDebunk(lang) {
-      if (!currentResult) return;
-      const text = lang === 'en' ? currentResult.shareable_card.whatsapp_format_text_en : currentResult.shareable_card.whatsapp_format_text_hi;
-      navigator.clipboard.writeText(text);
-      showToast(lang === 'en' ? 'English Debunk Card copied to clipboard!' : 'हिंदी डेबंक कार्ड कॉपी हो गया!');
-    }
-
-    // Load initial scenario on page load
-    window.onload = () => selectScenario('unesco-anthem');
-  </script>
+  <script src="/static/js/app.js"></script>
 </body>
 </html>

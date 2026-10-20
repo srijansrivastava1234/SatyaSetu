@@ -67,3 +67,5 @@ class VerificationResponse(BaseModel):
     pipeline_steps: List[PipelineStep]
     total_latency_ms: int
     data_source_mode: str
+    is_cached: bool = False
+

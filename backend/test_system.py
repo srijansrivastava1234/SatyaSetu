@@ -43,7 +43,7 @@ def get_test_client():
 
 def run_evaluation(dataset_path=DEFAULT_DATASET):
     print("=" * 72)
-    print("SatyaSetu Benchmark Evaluation Runner (PS ID: 202611)")
+    print("SatyaSetu Misinformation Verification Benchmark Suite")
     print(f"Loading test suite: {dataset_path}")
     print("=" * 72)
 
