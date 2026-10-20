@@ -301,6 +301,7 @@ function renderResults(res) {
     if (res.certified_evidence && res.certified_evidence.length > 0) {
       res.certified_evidence.forEach(item => {
         renderedCount++;
+        const gSearchUrl = `https://news.google.com/search?q=${encodeURIComponent(item.fact_checker + ' ' + item.claim_text)}`;
         evCont.innerHTML += `
           <div style="padding:14px 16px; border-radius:var(--radius-sm); background:var(--bg-surface-elevated); border:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:16px;">
             <div style="flex:1;">
@@ -311,9 +312,10 @@ function renderResults(res) {
               </div>
               <p style="font-size:0.85rem; color:var(--text-secondary); margin:0;">"${item.claim_text}"</p>
             </div>
-            <div style="display:flex; align-items:center; gap:10px; flex-shrink:0;">
+            <div style="display:flex; align-items:center; gap:8px; flex-shrink:0; flex-wrap:wrap;">
               <span class="badge badge-debunked">${item.rating}</span>
               ${item.review_url ? `<a href="${item.review_url}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding:5px 12px; font-size:0.78rem;">Read Investigation ↗</a>` : ''}
+              <a href="${gSearchUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding:5px 10px; font-size:0.75rem; background:transparent; border:1px solid var(--border-subtle); color:var(--text-muted);" title="Search live coverage for this headline on Google News">Live News ↗</a>
             </div>
           </div>
         `;
@@ -325,6 +327,7 @@ function renderResults(res) {
       res.web_grounding_citations.forEach(c => {
         renderedCount++;
         const badgeText = c.authority_badge || 'Accredited Journalistic Source';
+        const gSearchUrl = `https://news.google.com/search?q=${encodeURIComponent(c.publisher + ' ' + c.title)}`;
         evCont.innerHTML += `
           <div style="padding:14px 16px; border-radius:var(--radius-sm); background:var(--bg-surface-elevated); border:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:16px;">
             <div style="flex:1;">
@@ -336,11 +339,12 @@ function renderResults(res) {
               <div style="font-size:0.9rem; font-weight:600; color:var(--text-primary); margin:2px 0;">${c.title}</div>
               <div style="font-size:0.8rem; color:var(--text-secondary);">${c.snippet}</div>
             </div>
-            ${c.url ? `
-              <div style="flex-shrink:0;">
+            <div style="display:flex; align-items:center; gap:8px; flex-shrink:0; flex-wrap:wrap;">
+              ${c.url ? `
                 <a href="${c.url}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding:5px 12px; font-size:0.78rem;">Source ↗</a>
-              </div>
-            ` : ''}
+              ` : ''}
+              <a href="${gSearchUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding:5px 10px; font-size:0.75rem; background:transparent; border:1px solid var(--border-subtle); color:var(--text-muted);" title="Search live coverage for this headline on Google News">Live News ↗</a>
+            </div>
           </div>
         `;
       });

@@ -65,7 +65,7 @@ export const SourceEvidenceTable = ({ evidence, webCitations }) => {
                   </p>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                   <span className="badge badge-false" style={{ fontSize: '0.75rem', padding: '6px 12px' }}>
                     Rating: {item.rating}
                   </span>
@@ -90,10 +90,32 @@ export const SourceEvidenceTable = ({ evidence, webCitations }) => {
                         border: '1px solid rgba(56, 189, 248, 0.3)'
                       }}
                     >
-                      <span>Read Full Debunk</span>
+                      <span>Read Investigation</span>
                       <ExternalLink size={14} />
                     </a>
                   )}
+
+                  <a
+                    href={`https://news.google.com/search?q=${encodeURIComponent(item.fact_checker + ' ' + item.claim_text)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '6px 10px',
+                      borderRadius: 'var(--radius-sm)',
+                      background: 'rgba(255, 255, 255, 0.04)',
+                      color: '#94a3b8',
+                      fontSize: '0.72rem',
+                      fontWeight: 500,
+                      textDecoration: 'none',
+                      border: '1px solid var(--border-color)'
+                    }}
+                    title="Search live coverage on Google News"
+                  >
+                    <span>Live News ↗</span>
+                  </a>
                 </div>
               </div>
             ))}
@@ -122,20 +144,45 @@ export const SourceEvidenceTable = ({ evidence, webCitations }) => {
                   gap: '6px'
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', flexWrap: 'wrap' }}>
                   <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#10b981' }}>
                     {cite.publisher}
                   </span>
-                  {cite.url && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    {cite.url && (
+                      <a
+                        href={cite.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          color: '#38bdf8',
+                          fontSize: '0.75rem',
+                          textDecoration: 'none'
+                        }}
+                      >
+                        <span>Source</span>
+                        <ExternalLink size={12} />
+                      </a>
+                    )}
                     <a
-                      href={cite.url}
+                      href={`https://news.google.com/search?q=${encodeURIComponent(cite.publisher + ' ' + cite.title)}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{ color: '#94a3b8', display: 'flex', alignItems: 'center' }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: '#94a3b8',
+                        fontSize: '0.72rem',
+                        textDecoration: 'none'
+                      }}
+                      title="Search live reporting on Google News"
                     >
-                      <ExternalLink size={14} />
+                      <span>Live News ↗</span>
                     </a>
-                  )}
+                  </div>
                 </div>
                 <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#f8fafc' }}>
                   {cite.title}

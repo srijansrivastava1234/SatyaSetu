@@ -153,3 +153,9 @@ def get_recent_history(limit: int = 8) -> List[Dict[str, Any]]:
             }
             for row in rows
         ]
+
+# Ensure tables exist immediately upon import
+try:
+    init_db()
+except Exception as e:
+    pass

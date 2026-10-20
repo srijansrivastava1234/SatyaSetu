@@ -125,6 +125,50 @@ def resolve_source_credentials(raw_source: str, url: str = "") -> Tuple[str, str
 
     return raw_source or "General Media", "News Report", "", False
 
+import html
+
+async def search_ddg_live(query: str, max_results: int = 10) -> List[Dict[str, Any]]:
+    """
+    Zero-key live web search via DuckDuckGo HTML endpoint.
+    Retrieves authentic, direct article URLs across national press and fact-check registries.
+    """
+    url = "https://html.duckduckgo.com/html/"
+    results = []
+    try:
+        async with httpx.AsyncClient(timeout=4.5) as client:
+            resp = await client.post(
+                url,
+                data={"q": query},
+                headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
+            )
+            if resp.status_code == 200:
+                matches = list(re.finditer(r'<a[^>]+class="result__a"[^>]*href="([^"]+)"[^>]*>(.*?)</a>', resp.text, re.DOTALL))
+                snippets = re.findall(r'<a[^>]+class="result__snippet"[^>]*>(.*?)</a>', resp.text, re.DOTALL)
+                
+                for idx, m in enumerate(matches[:max_results]):
+                    href = m.group(1)
+                    raw_title = m.group(2)
+                    clean_title = html.unescape(re.sub(r'<[^>]+>', '', raw_title)).strip()
+                    
+                    actual_url = href
+                    if "uddg=" in href:
+                        qs = urllib.parse.parse_qs(urllib.parse.urlparse(href).query)
+                        if "uddg" in qs:
+                            actual_url = qs["uddg"][0]
+                            
+                    snip = ""
+                    if idx < len(snippets):
+                        snip = html.unescape(re.sub(r'<[^>]+>', '', snippets[idx])).strip()
+                        
+                    results.append({
+                        "title": clean_title,
+                        "url": actual_url,
+                        "snippet": snip
+                    })
+    except Exception as e:
+        print(f"[SearchEngine] Live web search notice: {e}")
+    return results
+
 async def search_live_grounding(query: str) -> Dict[str, Any]:
     clean_query = re.sub(r"[!?,.:;\"']+", " ", query).strip()
     words = [w for w in clean_query.split() if len(w) > 2 and w.lower() not in STOP_WORDS]
@@ -132,18 +176,70 @@ async def search_live_grounding(query: str) -> Dict[str, Any]:
 
     specific_keywords = set(w.lower() for w in words if len(w) > 3 and w.lower() not in {"government", "official", "india", "people", "minister"})
 
-    url = f"https://news.google.com/rss/search?q={urllib.parse.quote(search_q)}&hl=en-IN&gl=IN&ceid=IN:en"
-    
     articles = []
     debunks: List[ClaimReviewEvidence] = []
     authentic_items: List[Dict[str, Any]] = []
 
+    # 1. Zero-key Live Web Search across news & fact-checking desks (DuckDuckGo live endpoint)
+    ddg_results = await search_ddg_live(f"{search_q} fact check", max_results=8)
+    if not ddg_results or len(ddg_results) < 3:
+        ddg_more = await search_ddg_live(search_q, max_results=6)
+        ddg_results.extend([r for r in ddg_more if not any(x['url'] == r['url'] for x in ddg_results)])
+
+    for item in ddg_results:
+        title = item.get("title", "")
+        link = item.get("url", "")
+        snip = item.get("snippet", "")
+        if not title or not link or not link.startswith("http"):
+            continue
+
+        lower_text = f"{title} {snip}".lower()
+        canonical_name, authority_badge, verified_domain, is_genuine = resolve_source_credentials(title, link)
+
+        has_debunk_kw = any(k in lower_text for k in DEBUNK_KEYWORDS)
+        is_factchecker = any(fp in canonical_name.lower() for fp in CERTIFIED_FACTCHECKERS)
+        is_debunk = has_debunk_kw or is_factchecker
+
+        title_words = set(re.findall(r"\w+", lower_text))
+        overlap_count = len(specific_keywords.intersection(title_words))
+
+        item_dict = {
+            "title": title,
+            "url": link,
+            "source": canonical_name,
+            "authority_badge": authority_badge,
+            "verified_domain": verified_domain,
+            "pub_date": "Live Web Crawl",
+            "is_debunk": is_debunk,
+            "is_trusted": is_genuine,
+            "overlap": overlap_count,
+            "snippet": snip
+        }
+        articles.append(item_dict)
+
+        if is_debunk and overlap_count >= 1:
+            debunks.append(
+                ClaimReviewEvidence(
+                    claim_text=title,
+                    claimant="Viral Social Media / WhatsApp",
+                    fact_checker=canonical_name,
+                    rating="False / Debunked",
+                    review_date="Live Verification",
+                    review_url=link,
+                    is_ifcn_certified=is_factchecker
+                )
+            )
+        elif is_genuine and overlap_count >= 2:
+            authentic_items.append(item_dict)
+
+    # 2. Live Google News RSS Search
+    rss_url = f"https://news.google.com/rss/search?q={urllib.parse.quote(search_q)}&hl=en-IN&gl=IN&ceid=IN:en"
     try:
         async with httpx.AsyncClient(timeout=4.0) as client:
-            res = await client.get(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) SatyaSetu/1.0"})
+            res = await client.get(rss_url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 SatyaSetu/1.0"})
             if res.status_code == 200:
                 root = ET.fromstring(res.text)
-                for item in root.findall(".//item")[:15]:
+                for item in root.findall(".//item")[:10]:
                     title_elem = item.find("title")
                     link_elem = item.find("link")
                     pub_elem = item.find("pubDate")
@@ -154,18 +250,16 @@ async def search_live_grounding(query: str) -> Dict[str, Any]:
                     pub_date = pub_elem.text if pub_elem is not None else ""
                     raw_source = source_elem.text if source_elem is not None else ""
 
-                    if not title:
+                    if not title or any(a['url'] == link for a in articles):
                         continue
 
                     lower_title = title.lower()
-
                     canonical_name, authority_badge, verified_domain, is_genuine = resolve_source_credentials(raw_source, link)
 
                     has_debunk_kw = any(k in lower_title for k in DEBUNK_KEYWORDS)
                     is_factchecker = any(fp in canonical_name.lower() for fp in CERTIFIED_FACTCHECKERS)
                     is_debunk = has_debunk_kw or (is_factchecker and ("check" in lower_title or "claim" in lower_title))
 
-                    # Topical overlap check: does the news title actually address the claim's core subjects?
                     title_words = set(re.findall(r"\w+", lower_title))
                     overlap_count = len(specific_keywords.intersection(title_words))
 
@@ -178,11 +272,12 @@ async def search_live_grounding(query: str) -> Dict[str, Any]:
                         "pub_date": pub_date,
                         "is_debunk": is_debunk,
                         "is_trusted": is_genuine,
-                        "overlap": overlap_count
+                        "overlap": overlap_count,
+                        "snippet": f"Coverage published by {canonical_name}."
                     }
                     articles.append(item_dict)
 
-                    if is_debunk:
+                    if is_debunk and overlap_count >= 1:
                         debunks.append(
                             ClaimReviewEvidence(
                                 claim_text=title,
@@ -197,14 +292,14 @@ async def search_live_grounding(query: str) -> Dict[str, Any]:
                     elif is_genuine and overlap_count >= 2:
                         authentic_items.append(item_dict)
     except Exception as e:
-        print(f"[SearchEngine] Live grounding query notice: {e}")
+        print(f"[SearchEngine] Google News RSS notice: {e}")
 
     # Prioritize genuine, accredited newspapers and official sources
     trusted_articles = [a for a in articles if a["is_trusted"]]
     selected_pool = trusted_articles if trusted_articles else articles
 
     citations = []
-    for art in selected_pool[:4]:
+    for art in selected_pool[:5]:
         date_str = art['pub_date'][:16] if art.get('pub_date') else 'Recent Reporting'
         domain_tag = f" ({art['verified_domain']})" if art.get('verified_domain') else ""
         citations.append({
@@ -213,7 +308,7 @@ async def search_live_grounding(query: str) -> Dict[str, Any]:
             "authority_badge": art.get("authority_badge", "Accredited Media Source"),
             "url": art["url"],
             "pub_date": date_str,
-            "snippet": f"Published coverage ({date_str}). Source Authority: [{art.get('authority_badge', 'Accredited Media Source')}]."
+            "snippet": art.get("snippet") or f"Published coverage ({date_str}). Source Authority: [{art.get('authority_badge', 'Accredited Media Source')}]."
         })
 
     # Curated authoritative newspaper fallback if 0 trusted live articles matched
@@ -225,7 +320,7 @@ async def search_live_grounding(query: str) -> Dict[str, Any]:
                     "title": "ISRO Official Space Mission Registry & Press Communiqué",
                     "publisher": "Indian Space Research Organisation (isro.gov.in)",
                     "authority_badge": "Statutory Space Agency Gazette",
-                    "url": "https://www.isro.gov.in/PressReleases.html",
+                    "url": "https://www.isro.gov.in",
                     "pub_date": "Official Archive",
                     "snippet": "Statutory scientific publication confirming satellite payloads and orbital parameters."
                 },
@@ -233,7 +328,7 @@ async def search_live_grounding(query: str) -> Dict[str, Any]:
                     "title": "National Space Programme Reporting & Launch Verification",
                     "publisher": "The Hindu (thehindu.com)",
                     "authority_badge": "Accredited National Newspaper",
-                    "url": "https://www.thehindu.com/sci-tech/science/",
+                    "url": "https://www.thehindu.com",
                     "pub_date": "National Edition",
                     "snippet": "Corroborated news desk coverage by accredited science and defence correspondents."
                 }
@@ -244,7 +339,7 @@ async def search_live_grounding(query: str) -> Dict[str, Any]:
                     "title": "Monetary Policy & Currency Regulation Press Release",
                     "publisher": "Reserve Bank of India (rbi.org.in)",
                     "authority_badge": "Central Bank Statutory Gazette",
-                    "url": "https://rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx",
+                    "url": "https://www.rbi.org.in",
                     "pub_date": "Official Gazette",
                     "snippet": "Official statutory bulletin published by the Department of Communication, RBI."
                 },
@@ -252,7 +347,7 @@ async def search_live_grounding(query: str) -> Dict[str, Any]:
                     "title": "Banking & Financial Policy Desk Analysis",
                     "publisher": "Mint / Livemint (livemint.com)",
                     "authority_badge": "Accredited Financial Daily",
-                    "url": "https://www.livemint.com/industry/banking",
+                    "url": "https://www.livemint.com",
                     "pub_date": "Financial Coverage",
                     "snippet": "Specialized banking analysis and verified policy rate reporting."
                 }
@@ -263,7 +358,7 @@ async def search_live_grounding(query: str) -> Dict[str, Any]:
                     "title": "Examination Coordination & Circular Timetable",
                     "publisher": "Central Board of Secondary Education (cbse.gov.in)",
                     "authority_badge": "Statutory Education Authority",
-                    "url": "https://www.cbse.gov.in/cbsenew/examination.html",
+                    "url": "https://www.cbse.gov.in",
                     "pub_date": "Statutory Notification",
                     "snippet": "Official circular issued under the authority of Controller of Examinations, CBSE."
                 },
@@ -271,7 +366,7 @@ async def search_live_grounding(query: str) -> Dict[str, Any]:
                     "title": "Education Board Circular Verification & Timetable Release",
                     "publisher": "The Indian Express (indianexpress.com)",
                     "authority_badge": "Accredited National Newspaper",
-                    "url": "https://indianexpress.com/section/education/",
+                    "url": "https://indianexpress.com",
                     "pub_date": "National Reporting",
                     "snippet": "Direct reporting confirming authenticated date sheets and circular numbers."
                 }
@@ -281,7 +376,7 @@ async def search_live_grounding(query: str) -> Dict[str, Any]:
                 "title": "National Information Services & Media Archive",
                 "publisher": "Press Information Bureau (pib.gov.in)",
                 "authority_badge": "Official Government Gazette",
-                "url": "https://pib.gov.in",
+                "url": "https://factcheck.pib.gov.in",
                 "pub_date": "Government of India",
                 "snippet": "Official nodal agency of the Government of India for communicating authenticated information."
             })
@@ -292,6 +387,6 @@ async def search_live_grounding(query: str) -> Dict[str, Any]:
         "authentic_items": authentic_items,
         "citations": citations,
         "has_debunk": len(debunks) > 0,
-        "has_authentic_coverage": len(authentic_items) >= 2,
+        "has_authentic_coverage": len(authentic_items) >= 1 or (not debunks and any(a["is_trusted"] for a in articles) and len(citations) > 0),
         "total_results": len(articles)
     }
