@@ -1,6 +1,6 @@
-# SatyaSetu: Team Command Center & Stage Operations Manual
-**Problem Statement 11 (PS ID: 202611)**: TrustAI: Tackling Digital Misinformation  
-**Format**: 5 Minutes Stage Pitch + 2 Minutes Q&A Defense  
+# SatyaSetu: Core Engineering Team & Architecture Ownership
+**Domain**: TrustAI & Digital Misinformation Intelligence  
+**System Architecture & Technical Ownership Matrix**  
 
 ---
 

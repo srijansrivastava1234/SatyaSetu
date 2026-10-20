@@ -102,7 +102,7 @@ export default function App() {
             letterSpacing: '0.04em',
             textTransform: 'uppercase'
           }}>
-            Problem Statement 11 • PS ID: 202611
+            CIVIC TRUST & INFORMATION INTEGRITY
           </div>
           <h2 style={{
             fontSize: 'clamp(1.8rem, 4vw, 2.5rem)',
@@ -201,7 +201,7 @@ export default function App() {
         backgroundColor: 'rgba(7, 9, 14, 0.95)'
       }}>
         <div>
-          <strong>SatyaSetu</strong> • Built for TrustAI: Tackling Digital Misinformation (PS ID: 202611)
+          <strong>SatyaSetu</strong> • TrustAI Misinformation & Viral Disinformation Intelligence Engine
         </div>
         <div style={{ marginTop: '4px', fontSize: '0.75rem', color: '#64748b' }}>
           Combines Google Fact Check Tools API (IFCN Schema) • Multimodal Vision OCR • Regional Indian Civic Grounding

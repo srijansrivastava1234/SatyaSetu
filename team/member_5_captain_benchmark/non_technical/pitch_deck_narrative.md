@@ -10,8 +10,8 @@
 
 ---
 
-### [0:25 - 1:10] Framing Problem Statement 11 & The Fatal Flaw of Existing Solutions
-> "Under **Problem Statement 11: TrustAI - Tackling Digital Misinformation**, the standard industry response has been to launch fact-checking portals. But existing fact-checkers suffer from three fatal flaws:
+### [0:25 - 1:10] Framing The Crisis & The Fatal Flaw of Existing Solutions
+> "In tackling digital misinformation, the standard industry response has been to launch fact-checking portals. But existing fact-checkers suffer from three fatal flaws:
 > 1. **Friction**: Nobody leaves WhatsApp to search a 1,500-word investigative article on AltNews or Snopes.
 > 2. **Hallucination Risk**: Creative LLMs like ChatGPT or base Gemini hallucinate answers when they lack verified ground truth.
 > 3. **Missing Rebuttals**: Even when a citizen knows a message is fake, they lack the courage or words to contradict a family elder in a group chat.

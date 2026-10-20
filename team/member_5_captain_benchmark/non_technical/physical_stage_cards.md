@@ -6,7 +6,7 @@
 ### Card 1: Pitch Timing & Cues (Front of Hand)
 - **[0:00 - 1:10] Hook & Problem 11**:
   - The UP Grandfather WhatsApp PM Laptop scam hook.
-  - Problem Statement 11: TrustAI - Tackling Digital Misinformation.
+  - Core Mission: TrustAI - Tackling Digital Misinformation.
   - The 3 Fatal Flaws of Existing Solutions: Friction (1,500 word articles), Hallucination (generative guessing), Social awkwardness in family groups.
   - Introduce: **SatyaSetu (सत्यसेतु)**.
   - *CUE*: *"I now hand over to our Frontend Driver, Member 3, to show SatyaSetu live."*

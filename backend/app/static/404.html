@@ -3,108 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404: Evidence Not Found | SatyaSetu TrustAI</title>
-  <meta name="description" content="The requested dossier or page does not exist or has been flagged and purged." />
+  <title>404: Evidence Record Not Found | SatyaSetu Intelligence Engine</title>
+  <meta name="description" content="The requested claim record does not exist in the verification database." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/app.css">
   <style>
-    :root {
-      --bg-primary: #07090e;
-      --border-color: rgba(255, 255, 255, 0.08);
-      --text-primary: #f8fafc;
-      --text-secondary: #94a3b8;
-      --color-brand: #38bdf8;
-      --color-crimson: #ef4444;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
+      min-height: 100vh;
       padding: 24px;
-      text-align: center;
-      background-image: 
-        radial-gradient(circle at 50% 30%, rgba(239, 68, 68, 0.1) 0%, transparent 50%),
-        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-      background-size: 100% 100%, 48px 48px, 48px 48px;
+      margin: 0;
     }
-    .panel {
-      background: rgba(18, 24, 38, 0.85);
+    .error-card {
+      background: var(--bg-surface);
       border: 1px solid var(--border-color);
-      border-radius: 20px;
+      border-radius: var(--radius-lg);
       padding: 48px 36px;
-      max-width: 540px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.7);
-      backdrop-filter: blur(16px);
+      max-width: 520px;
+      text-align: center;
+      box-shadow: var(--shadow-panel);
     }
-    .badge-error {
-      background: rgba(239, 68, 68, 0.15);
-      color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      padding: 6px 14px;
-      border-radius: 9999px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      display: inline-block;
-      margin-bottom: 20px;
-    }
-    .code {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 5rem;
+    .error-code {
+      font-family: var(--font-mono);
+      font-size: 4.5rem;
       font-weight: 800;
-      color: #ef4444;
+      color: var(--color-danger);
       line-height: 1;
-      margin-bottom: 12px;
-      text-shadow: 0 0 30px rgba(239, 68, 68, 0.4);
+      margin: 16px 0;
+      letter-spacing: -0.05em;
     }
-    p {
+    .error-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    .error-desc {
       color: var(--text-secondary);
       font-size: 0.95rem;
       line-height: 1.6;
       margin-bottom: 28px;
     }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: linear-gradient(135deg, #38bdf8 0%, #2563eb 100%);
-      color: #fff;
-      text-decoration: none;
-      padding: 12px 28px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.35);
-    }
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 25px rgba(56, 189, 248, 0.5);
-    }
   </style>
 </head>
 <body>
-  <div class="panel">
-    <div class="badge-error">Investigation Status: Redacted / Non-Existent</div>
-    <div class="code">404</div>
-    <h1 style="font-size:1.5rem; margin-bottom:12px; color:#fff;">Evidence Record Not Found</h1>
-    <p>
-      The specific claim dossier or link you requested is not indexed in the SatyaSetu verification database. The route may have been purged, or the URL might be mistyped.
+  <main class="error-card">
+    <span class="badge badge-error">HTTP 404 • Resource Purged or Missing</span>
+    <div class="error-code">404</div>
+    <h1 class="error-title">Verification Record Not Found</h1>
+    <p class="error-desc">
+      The specific claim dossier or endpoint requested is not indexed in the SatyaSetu persistence layer. The route may have been decommissioned or the URI might be mistyped.
     </p>
     <div>
-      <a href="/" class="btn">
-        🛡️ Return to SatyaSetu Intelligence Engine
+      <a href="/" class="btn btn-primary" style="text-decoration:none; display:inline-flex;">
+        Return to Verification Terminal
       </a>
     </div>
-  </div>
+  </main>
 </body>
 </html>

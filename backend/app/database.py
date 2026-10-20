@@ -5,7 +5,12 @@ import os
 import time
 from typing import Optional, Dict, Any, List
 
-DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "satyasetu.db")
+try:
+    from app.config import settings
+    _custom_db = settings.DATABASE_PATH
+    DB_PATH = _custom_db if os.path.isabs(_custom_db) else os.path.join(os.path.dirname(os.path.dirname(__file__)), _custom_db)
+except Exception:
+    DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "satyasetu.db")
 
 def get_connection() -> sqlite3.Connection:
     conn = sqlite3.connect(DB_PATH, timeout=5.0)

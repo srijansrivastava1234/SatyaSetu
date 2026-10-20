@@ -43,7 +43,7 @@ export const Navbar = ({ apiKey, setApiKey }) => {
                 Satya<span style={{ color: '#38bdf8' }}>Setu</span>
               </h1>
               <span className="badge badge-neutral" style={{ fontSize: '0.65rem', padding: '2px 8px' }}>
-                PS ID: 202611
+                v1.2.0 • Production
               </span>
             </div>
             <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
