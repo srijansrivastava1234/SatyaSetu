@@ -9,11 +9,11 @@
 
 | Member & Role | Hardware | Code / Technical Ownership | Stage & Non-Technical Ownership |
 | :--- | :--- | :--- | :--- |
-| **Member 1**: Backend & Search Architect | **Laptop 1** | `app.py`, `search_engine.py`, L1 Cache, FastAPI | Answers on Speed, Hosting, API Failover, Quota |
-| **Member 2**: AI, Vision & Benchmark Lead | **Laptop 2** | `ai_engine.py`, `ocr_engine.py`, `test_system.py`, `test_dataset.json` | Answers on Accuracy, NLI Stance, Benchmark Eval, OCR |
-| **Member 3**: Frontend Developer & Stage Driver | **Laptop 3 (Stage)** | `frontend/*`, UI Telemetry, Clipboard API | **Speaker B** (Drives the Live Screen on Stage: 1:10 - 3:10) |
-| **Member 4**: Client Integration & Extension Lead | **Laptop 4** | `extension/*` (Manifest V3), WhatsApp spec | Answers on User Onboarding, Privacy, WhatsApp Bot |
-| **Member 5**: Stage Presenter, Product Lead & Captain | **NO LAPTOP (100% Stage Master)** | **ZERO TECHNICAL DELIVERABLES** | **Speaker A** (Lead Presenter: 0:00-1:10 & 3:10-5:00), Q&A Anchor, Stopwatch Timekeeper |
+| **Srijan Srivastava**: Team Captain & Full-Stack Architect | **Laptop 1** | `main.py`, `orchestrator.py`, FastAPI, Cloud Deployment | Overall Captain Anchor, Stage Delivery, Architecture Defense |
+| **Anshika Pandey**: AI, Vision & Benchmark Lead | **Laptop 2** | `atomic_extractor.py`, Gemini OCR, Stance Detection | Accuracy Defense, Multimodal Benchmarks, OCR Pipeline |
+| **Amit Kumar Rajput**: Fact-Checking & Knowledge Architect | **Laptop 3** | `factcheck_engine.py`, ClaimReview API, PIB Sources | API Reliability, IFCN Standards, Gazettes Grounding |
+| **Akhilesh Sharma**: Frontend Developer & Simulator Lead | **Laptop 4** | `index.html`, React UI, WhatsApp Simulator, Clipboard Cards | Stage UI Driver, Live Interaction, UX & Inclusivity |
+| **Suryansh Pandey**: Linguistic Deception & Policy Lead | **NO LAPTOP (100% Stage Master)** | Psychological Deception Rules, S.A.T.Y.A. Protocol | **Speaker A** (Pitch Framing & Hook), Timekeeper, Q&A Anchor |
 
 ---
 
