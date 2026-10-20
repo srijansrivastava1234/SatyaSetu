@@ -1,7 +1,6 @@
-# Member 5: Lead Stage Presenter, Product Lead & Team Captain
-* **Hardware Allocation**: **NO LAPTOP (100% Unencumbered Stage Master)**
-* **Technical Deliverables**: **NONE (0% Code, 0% Terminals)**
-  *(Note: Benchmark scripts and dataset maintenance have been reallocated to Member 2 on Laptop 2).*
+# Team Leadership, Product Strategy & Stage Pitch (Anshika Pandey)
+* **Role**: **Team Leader & Strategic Presenter**
+* **Focus Area**: Strategic Pitch Framing, Civic Policy, Q&A Anchor, Stage Coordination
 * **Primary Responsibilities**:
   1. **Speaker A (Lead Stage Presenter)**: Owns the 5-minute pitch narrative (Minutes 0:00–1:10 and 3:10–5:00).
   2. **Q&A Captain Anchor**: Intercepts every single judge question, delivers the 1-sentence strategic answer, and routes deep technical questions to Members 1, 2, or 4.
