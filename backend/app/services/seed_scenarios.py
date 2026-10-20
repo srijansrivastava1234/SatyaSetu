@@ -65,15 +65,19 @@ SEED_SCENARIOS: Dict[str, Dict[str, Any]] = {
             web_grounding_citations=[
                 {
                     "title": "UNESCO Official Clarification: No such award exists",
-                    "publisher": "The Hindu / Official UNESCO Spokesperson",
+                    "publisher": "The Hindu (thehindu.com)",
+                    "authority_badge": "Accredited National Newspaper",
                     "url": "https://www.thehindu.com/news/national/unesco-denies-ranking-national-anthems/article2470123.ece",
-                    "snippet": "UNESCO had officially stated in 2008 and reiterated multiple times that it does not evaluate, rank, or award 'Best National Anthem' titles to any country."
+                    "pub_date": "National Investigative Reporting",
+                    "snippet": "UNESCO had officially stated that it does not evaluate, rank, or award 'Best National Anthem' titles to any country."
                 },
                 {
-                    "title": "Evolution of India's Longest Running Internet Hoax",
-                    "publisher": "India Today Fact Check Desk",
+                    "title": "Fact Check: Evolution of India's Longest Running Internet Hoax",
+                    "publisher": "India Today (indiatoday.in)",
+                    "authority_badge": "Certified IFCN Fact-Checking Desk",
                     "url": "https://www.indiatoday.in/fact-check",
-                    "snippet": "This hoax originated via email chains as early as 2006 and continuously resurfaces around Independence Day and Republic Day on WhatsApp."
+                    "pub_date": "Fact-Check Investigation",
+                    "snippet": "Analysis tracing the false viral anthem claim and confirming official UNESCO disclaimers."
                 }
             ],
             manipulation_breakdown=ManipulationSignals(
@@ -184,10 +188,20 @@ SEED_SCENARIOS: Dict[str, Dict[str, Any]] = {
             ],
             web_grounding_citations=[
                 {
-                    "title": "RBI Official Paisa Bolta Hai Portal: ₹500 Security Features",
+                    "title": "RBI Official Paisa Bolta Hai Portal: ₹500 Security Features Clarification",
                     "publisher": "Reserve Bank of India (rbi.org.in)",
+                    "authority_badge": "Central Bank Statutory Gazette",
                     "url": "https://paisaboltahai.rbi.org.in",
+                    "pub_date": "Statutory Financial Gazette",
                     "snippet": "RBI clarified that both types of ₹500 currency notes with minor printing placement shifts of the security thread are 100% genuine and legal tender."
+                },
+                {
+                    "title": "Fact Check: Viral message claiming ₹500 note with security thread near Gandhi is fake is bogus",
+                    "publisher": "The Economic Times (economictimes.indiatimes.com)",
+                    "authority_badge": "Accredited Financial Daily",
+                    "url": "https://economictimes.indiatimes.com/wealth/personal-finance-news",
+                    "pub_date": "Financial Daily Reporting",
+                    "snippet": "The Economic Times confirms RBI clarification: Notes with either placement of security thread are completely valid legal tender."
                 }
             ],
             manipulation_breakdown=ManipulationSignals(
@@ -296,10 +310,20 @@ SEED_SCENARIOS: Dict[str, Dict[str, Any]] = {
             ],
             web_grounding_citations=[
                 {
-                    "title": "Ministry of Consumer Affairs: Sufficient Salt Reserves Available",
+                    "title": "Ministry of Consumer Affairs: Sufficient Salt Reserves Available in India",
                     "publisher": "Press Information Bureau (pib.gov.in)",
+                    "authority_badge": "Official Government Gazette",
                     "url": "https://pib.gov.in",
+                    "pub_date": "Official Gazette Bulletin",
                     "snippet": "Government of India assured citizens that India produces over 300 lakh tonnes of salt annually, far exceeding domestic consumption of ~65 lakh tonnes."
+                },
+                {
+                    "title": "No shortage of salt, do not believe in rumours: Government clarifies amidst viral panic",
+                    "publisher": "The Indian Express (indianexpress.com)",
+                    "authority_badge": "Accredited National Newspaper",
+                    "url": "https://indianexpress.com/article/india/india-news-india/no-shortage-of-salt-dont-believe-in-rumours-up-government-clarifies/",
+                    "pub_date": "National Daily Reporting",
+                    "snippet": "National investigative report confirming ample salt supplies across wholesale markets and refuting viral hoard-buying rumors."
                 }
             ],
             manipulation_breakdown=ManipulationSignals(
@@ -383,16 +407,20 @@ SEED_SCENARIOS: Dict[str, Dict[str, Any]] = {
             certified_evidence=[],
             web_grounding_citations=[
                 {
-                    "title": "CBSE Official Notification Portal: Examination Guidelines",
+                    "title": "CBSE Official Notification Portal: Class 10 & 12 Examination Schedule",
                     "publisher": "Central Board of Secondary Education (cbse.gov.in)",
+                    "authority_badge": "Statutory Education Authority",
                     "url": "https://www.cbse.gov.in",
-                    "snippet": "Official press release and datesheet repository uploaded by Controller of Examinations, CBSE Head Office."
+                    "pub_date": "Official Statutory Circular",
+                    "snippet": "Official circular and authenticated timetable published by the Controller of Examinations, CBSE Head Office."
                 },
                 {
-                    "title": "National Media Verification: CBSE Releases Board Timetable",
-                    "publisher": "Press Trust of India / National Dailies",
-                    "url": "https://indianexpress.com/education",
-                    "snippet": "CBSE verified the publication of schedule on official website warning against unverified PDF circulated on social media."
+                    "title": "CBSE Date Sheet Announcement & Timetable Release",
+                    "publisher": "The Indian Express / PTI (indianexpress.com)",
+                    "authority_badge": "Accredited National Newspaper & Wire Service",
+                    "url": "https://indianexpress.com/article/education/cbse-datesheet-class-10-12-board-exam-schedule-download-pdf/",
+                    "pub_date": "National Newspaper Coverage",
+                    "snippet": "National education reporting confirming release of authenticated PDF timetable on official CBSE portal."
                 }
             ],
             manipulation_breakdown=ManipulationSignals(

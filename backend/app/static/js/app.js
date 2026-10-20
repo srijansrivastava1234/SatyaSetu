@@ -291,38 +291,67 @@ function renderResults(res) {
     }
   }
 
-  // Grounding Evidence Table
+  // Grounding Evidence & Journalistic Sources Table
   const evCont = document.getElementById('evidence-container');
   if (evCont) {
     evCont.innerHTML = '';
+    let renderedCount = 0;
+
+    // 1. Certified Fact-Check Desks (AltNews, BOOM, PIB Fact Check, Factly)
     if (res.certified_evidence && res.certified_evidence.length > 0) {
       res.certified_evidence.forEach(item => {
+        renderedCount++;
         evCont.innerHTML += `
-          <div style="padding:12px 16px; border-radius:var(--radius-md); background:var(--bg-surface-elevated); border:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <div>
-              <div style="display:flex; align-items:center; gap:8px; margin-bottom:3px;">
-                <span style="font-weight:700; font-size:0.85rem; color:var(--color-accent);">${item.fact_checker}</span>
-                <span class="badge badge-neutral" style="font-size:0.65rem;">Certified Source</span>
+          <div style="padding:14px 16px; border-radius:var(--radius-sm); background:var(--bg-surface-elevated); border:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:16px;">
+            <div style="flex:1;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px; flex-wrap:wrap;">
+                <span style="font-weight:700; font-size:0.88rem; color:var(--text-primary);">${item.fact_checker}</span>
+                <span class="badge badge-neutral" style="font-size:0.68rem;">Certified Fact-Checking Desk</span>
+                ${item.review_date ? `<span style="font-size:0.75rem; color:var(--text-muted);">${item.review_date}</span>` : ''}
               </div>
-              <p style="font-size:0.82rem; color:var(--text-primary); margin:0;">"${item.claim_text}"</p>
+              <p style="font-size:0.85rem; color:var(--text-secondary); margin:0;">"${item.claim_text}"</p>
             </div>
-            <div style="display:flex; align-items:center; gap:8px;">
+            <div style="display:flex; align-items:center; gap:10px; flex-shrink:0;">
               <span class="badge badge-debunked">${item.rating}</span>
-              ${item.review_url ? `<a href="${item.review_url}" target="_blank" class="btn btn-secondary" style="padding:4px 10px; font-size:0.75rem;">Source ↗</a>` : ''}
+              ${item.review_url ? `<a href="${item.review_url}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding:5px 12px; font-size:0.78rem;">Read Investigation ↗</a>` : ''}
             </div>
           </div>
         `;
       });
-    } else if (res.web_grounding_citations && res.web_grounding_citations.length > 0) {
+    }
+
+    // 2. Accredited National Newspapers, Official Gazettes & Wire Reports
+    if (res.web_grounding_citations && res.web_grounding_citations.length > 0) {
       res.web_grounding_citations.forEach(c => {
+        renderedCount++;
+        const badgeText = c.authority_badge || 'Accredited Journalistic Source';
         evCont.innerHTML += `
-          <div style="padding:12px 16px; border-radius:var(--radius-md); background:var(--bg-surface-elevated); border:1px solid var(--border-subtle); margin-bottom:8px;">
-            <div style="font-size:0.75rem; font-weight:700; color:var(--color-verified);">${c.publisher}</div>
-            <div style="font-size:0.88rem; font-weight:600; color:var(--text-primary); margin:2px 0;">${c.title}</div>
-            <div style="font-size:0.78rem; color:var(--text-muted);">${c.snippet}</div>
+          <div style="padding:14px 16px; border-radius:var(--radius-sm); background:var(--bg-surface-elevated); border:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:16px;">
+            <div style="flex:1;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px; flex-wrap:wrap;">
+                <span style="font-weight:700; font-size:0.88rem; color:var(--color-accent);">${c.publisher}</span>
+                <span class="badge badge-verified" style="font-size:0.68rem;">${badgeText}</span>
+                ${c.pub_date ? `<span style="font-size:0.75rem; color:var(--text-muted);">${c.pub_date}</span>` : ''}
+              </div>
+              <div style="font-size:0.9rem; font-weight:600; color:var(--text-primary); margin:2px 0;">${c.title}</div>
+              <div style="font-size:0.8rem; color:var(--text-secondary);">${c.snippet}</div>
+            </div>
+            ${c.url ? `
+              <div style="flex-shrink:0;">
+                <a href="${c.url}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding:5px 12px; font-size:0.78rem;">Source ↗</a>
+              </div>
+            ` : ''}
           </div>
         `;
       });
+    }
+
+    if (renderedCount === 0) {
+      evCont.innerHTML = `
+        <div style="padding:16px; text-align:center; color:var(--text-muted); font-size:0.85rem;">
+          No conflicting or corroborating coverage found in verified newspaper databases.
+        </div>
+      `;
     }
   }
 
