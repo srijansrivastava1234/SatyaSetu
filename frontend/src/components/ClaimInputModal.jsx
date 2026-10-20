@@ -256,12 +256,11 @@ export const ClaimInputModal = ({ onVerify, loading, rawText, setRawText, scenar
               alignItems: 'center',
               gap: '10px',
               padding: '12px 28px',
-              borderRadius: 'var(--radius-md)',
-              background: loading ? '#334155' : 'linear-gradient(135deg, #38bdf8 0%, #2563eb 100%)',
+              borderRadius: 'var(--radius-sm)',
+              background: loading ? '#30363d' : 'var(--color-brand)',
               color: '#ffffff',
-              fontWeight: 700,
-              fontSize: '0.95rem',
-              boxShadow: loading ? 'none' : '0 4px 20px rgba(56, 189, 248, 0.35)',
+              fontWeight: 600,
+              fontSize: '0.9rem',
               cursor: loading ? 'not-allowed' : 'pointer'
             }}
           >

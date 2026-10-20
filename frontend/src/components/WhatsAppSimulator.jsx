@@ -121,7 +121,7 @@ export const WhatsAppSimulator = ({ shareableCard, extractedText }) => {
           display: 'flex',
           flexDirection: 'column',
           gap: '14px',
-          background: 'radial-gradient(circle, #0b141a 0%, #080f14 100%)'
+          background: '#0b141a'
         }}>
           {/* 1. Incoming Viral Forward Bubble */}
           <div style={{

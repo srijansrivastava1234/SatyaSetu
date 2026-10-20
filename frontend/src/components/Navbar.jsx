@@ -18,22 +18,21 @@ export const Navbar = ({ apiKey, setApiKey }) => {
         justifyContent: 'space-between',
         padding: '16px 32px',
         borderBottom: '1px solid var(--border-color)',
-        backgroundColor: 'rgba(7, 9, 14, 0.85)',
-        backdropFilter: 'blur(12px)',
+        backgroundColor: 'var(--bg-secondary)',
         position: 'sticky',
         top: 0,
         zIndex: 50
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <div style={{
-            width: '42px',
-            height: '42px',
-            borderRadius: '12px',
-            background: 'linear-gradient(135deg, #f97316 0%, #38bdf8 50%, #10b981 100%)',
+            width: '36px',
+            height: '36px',
+            borderRadius: 'var(--radius-sm)',
+            background: 'var(--color-brand)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 0 20px rgba(56, 189, 248, 0.3)'
+            color: '#fff'
           }}>
             <ShieldCheck size={26} className="" />
           </div>
@@ -99,7 +98,6 @@ export const Navbar = ({ apiKey, setApiKey }) => {
           right: 0,
           bottom: 0,
           backgroundColor: 'rgba(0, 0, 0, 0.75)',
-          backdropFilter: 'blur(8px)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
