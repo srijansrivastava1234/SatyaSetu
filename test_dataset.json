@@ -1,0 +1,162 @@
+[
+  {
+    "id": "CASE_01",
+    "category": "VIRAL_HOAX",
+    "claim": "UNESCO has officially declared India's National Anthem Jana Gana Mana as the best in the world.",
+    "expected_verdict": "FALSE",
+    "source_verification": "UNESCO Official / AltNews",
+    "tags": ["patriotism_bait", "institutional_spoof"]
+  },
+  {
+    "id": "CASE_02",
+    "category": "FINANCIAL_PHISHING",
+    "claim": "Prime Minister Free Laptop Scheme 2026 registration open for 10th pass students. Apply today at govt-free-laptop.in",
+    "expected_verdict": "FALSE",
+    "source_verification": "PIB Fact Check",
+    "tags": ["phishing", "urgency", "student_scam"]
+  },
+  {
+    "id": "CASE_03",
+    "category": "MEDICAL_MYTH",
+    "claim": "Inhaling camphor and clove mixture cures lung infections and prevents oxygen drop instantly.",
+    "expected_verdict": "FALSE",
+    "source_verification": "Ministry of AYUSH / BOOM Live",
+    "tags": ["medical_misinformation", "panacea_myth"]
+  },
+  {
+    "id": "CASE_04",
+    "category": "AUTHENTIC_NEWS",
+    "claim": "ISRO successfully launched the PSLV-C58 mission carrying the XPoSat satellite to study cosmic X-ray sources.",
+    "expected_verdict": "VERIFIED",
+    "source_verification": "ISRO Press Release",
+    "tags": ["space_science", "official_government"]
+  },
+  {
+    "id": "CASE_05",
+    "category": "FINANCIAL_PHISHING",
+    "claim": "RBI has approved 50000 loan without collateral under Mudra Yojana 2.0. Click loan-rbi-instant.xyz",
+    "expected_verdict": "FALSE",
+    "source_verification": "Reserve Bank of India Circular",
+    "tags": ["rbi_spoof", "financial_fraud"]
+  },
+  {
+    "id": "CASE_06",
+    "category": "AUTHENTIC_NEWS",
+    "claim": "RBI kept the repo rate unchanged at 6.5 percent in the Monetary Policy Committee meeting.",
+    "expected_verdict": "VERIFIED",
+    "source_verification": "RBI MPC Official Statement",
+    "tags": ["economy", "banking"]
+  },
+  {
+    "id": "CASE_07",
+    "category": "VIRAL_HOAX",
+    "claim": "NASA satellite picture of India on Diwali night showing completely lit country taken from space.",
+    "expected_verdict": "FALSE",
+    "source_verification": "NASA Earth Observatory",
+    "tags": ["image_hoax", "diwali_recurrent"]
+  },
+  {
+    "id": "CASE_08",
+    "category": "COMMUNAL_RUMOR",
+    "claim": "Government to shut down all private bank accounts and convert deposits into digital bond tokens by Friday.",
+    "expected_verdict": "FALSE",
+    "source_verification": "Ministry of Finance Gazette",
+    "tags": ["panic_inducing", "banking_hoax"]
+  },
+  {
+    "id": "CASE_09",
+    "category": "AUTHENTIC_NEWS",
+    "claim": "CBSE announced the date sheet for Class 10 and Class 12 board examinations starting mid-February.",
+    "expected_verdict": "VERIFIED",
+    "source_verification": "CBSE Official Notification",
+    "tags": ["education", "official_circular"]
+  },
+  {
+    "id": "CASE_10",
+    "category": "FINANCIAL_PHISHING",
+    "claim": "Electricity bill unpaid! Power will be disconnected tonight at 9:30 PM. Call electricity officer immediately at 9876543210.",
+    "expected_verdict": "FALSE",
+    "source_verification": "State DISCOM Alert / Cyber Police",
+    "tags": ["discom_scam", "manufactured_urgency"]
+  },
+  {
+    "id": "CASE_11",
+    "category": "VIRAL_HOAX",
+    "claim": "New Rs 2000 currency notes with micro-GPS tracking chips embedded inside are returning to circulation.",
+    "expected_verdict": "FALSE",
+    "source_verification": "RBI Fact Check",
+    "tags": ["gps_chip_myth", "currency_hoax"]
+  },
+  {
+    "id": "CASE_12",
+    "category": "AUTHENTIC_NEWS",
+    "claim": "Government has extended the deadline for linking Aadhaar with PAN card with a late fee penalty.",
+    "expected_verdict": "VERIFIED",
+    "source_verification": "CBDT Press Release",
+    "tags": ["taxation", "statutory_deadline"]
+  },
+  {
+    "id": "CASE_13",
+    "category": "CYBER_SCAM",
+    "claim": "WhatsApp will become chargeable from next Monday. Send this message to 20 contacts to keep it green and free.",
+    "expected_verdict": "FALSE",
+    "source_verification": "Meta Official Advisory",
+    "tags": ["chain_letter", "whatsapp_hoax"]
+  },
+  {
+    "id": "CASE_14",
+    "category": "MEDICAL_MYTH",
+    "claim": "Drinking boiled garlic water completely cures diabetes within 48 hours without any insulin.",
+    "expected_verdict": "FALSE",
+    "source_verification": "ICMR Guidelines",
+    "tags": ["diabetes_cure", "dangerous_health_myth"]
+  },
+  {
+    "id": "CASE_15",
+    "category": "AUTHENTIC_NEWS",
+    "claim": "Indian Railways launched the new Vande Bharat Express sleeper train for long distance overnight routes.",
+    "expected_verdict": "VERIFIED",
+    "source_verification": "Ministry of Railways",
+    "tags": ["railways", "infrastructure"]
+  },
+  {
+    "id": "CASE_16",
+    "category": "FINANCIAL_PHISHING",
+    "claim": "Income Tax Department approved refund of Rs 15490. Update bank account details now at incometax-refund-gov.link",
+    "expected_verdict": "FALSE",
+    "source_verification": "Income Tax Department Advisory",
+    "tags": ["tax_refund_phish", "credential_theft"]
+  },
+  {
+    "id": "CASE_17",
+    "category": "VIRAL_HOAX",
+    "claim": "Drinking water stored in copper vessel during solar eclipse creates poisonous cosmic radiation.",
+    "expected_verdict": "FALSE",
+    "source_verification": "Scientific Temper Advisory / Vigyan Prasar",
+    "tags": ["superstition", "eclipse_hoax"]
+  },
+  {
+    "id": "CASE_18",
+    "category": "AUTHENTIC_NEWS",
+    "claim": "Government announced subsidy on rooftop solar installation under PM Surya Ghar Muft Bijli Yojana.",
+    "expected_verdict": "VERIFIED",
+    "source_verification": "MNRE Portal / PIB",
+    "tags": ["solar_scheme", "official_initiative"]
+  },
+  {
+    "id": "CASE_19",
+    "category": "CYBER_SCAM",
+    "claim": "Congratulations! You won 25 Lakh in KBC Lottery. Call Rana Pratap Singh on WhatsApp to claim prize.",
+    "expected_verdict": "FALSE",
+    "source_verification": "Cyber Crime Portal Advisory",
+    "tags": ["kbc_lottery", "advance_fee_fraud"]
+  },
+  {
+    "id": "CASE_20",
+    "category": "UNVERIFIABLE_OPINION",
+    "claim": "Living in a Tier 3 city in India is spiritually healthier and less stressful than living in metro cities.",
+    "expected_verdict": "UNVERIFIABLE",
+    "source_verification": "Subjective Philosophical Claim",
+    "tags": ["opinion", "non_falsifiable"]
+  }
+]

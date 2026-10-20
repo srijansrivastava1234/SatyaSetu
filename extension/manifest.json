@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "SatyaSetu: TrustAI Fact Check & Misinformation Verifier",
+  "version": "1.0.0",
+  "description": "Zero-friction real-time fact-checking and WhatsApp viral rumor neutralizer powered by TrustAI.",
+  "permissions": [
+    "contextMenus",
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:8000/*",
+    "http://localhost:8000/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "SatyaSetu Quick Verifier"
+  }
+}
