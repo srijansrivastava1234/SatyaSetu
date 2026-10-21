@@ -1,0 +1,73 @@
+================================================================================
+SPEAKER 1: ANSHIKA PANDEY (TEAM LEADER & LEAD ANCHOR)
+SatyaSetu Pitch Script Card | RotaTech 2026
+================================================================================
+
+YOUR SLIDES:
+- Slide 1: Title Page & Executive Overview (Opening)
+- Slide 6: Research, References & Final Call-to-Action (Closing)
+- Jury Q&A: Master Anchor / Question Dispatcher
+
+YOUR SPEAKING TIME:
+- Opening: [0:00 - 0:45] (45 seconds)
+- Closing: [3:25 - 3:55] (30 seconds)
+- Total Speaking Time: ~75 seconds
+
+--------------------------------------------------------------------------------
+PART 1: OPENING SPEECH [0:00 - 0:45] (ON SLIDE 1)
+--------------------------------------------------------------------------------
+Mental Anchor: The Scam Story -> 500M Victims -> SatyaSetu Solution
+
+WHAT TO SAY:
+"Respected judges, picture an elderly grandfather in rural India.
+
+He receives a WhatsApp forward with an official emblem:
+'URGENT: PM Laptop Scheme last date tonight. Register now.'
+
+Desperate to help his granddaughter, he clicks the link, enters his bank details, 
+and within minutes his lifetime pension savings are emptied.
+
+This happens every day to over 500 million WhatsApp users across Bharat.
+
+Existing fact-checkers fail because rural citizens will never read 1,500-word 
+English articles before forwarding. And generic AI tools often hallucinate.
+
+Under Problem Statement 202611, we built SatyaSetu: India's first zero-hallucination 
+fact-checking engine that delivers instant, bilingual truth cards right where rumors spread.
+Our live production deployment is active at the URL shown in the top header.
+
+YOUR HANDOFF CUE (Say loudly & clearly):
+'To explain how rumors spread and how we stop them, here is Suryansh.'"
+
+--------------------------------------------------------------------------------
+PART 2: CLOSING SPEECH [3:25 - 3:55] (ON SLIDE 6)
+--------------------------------------------------------------------------------
+Mental Anchor: Open Standards -> Powerful Closing Line
+
+WHAT TO SAY:
+"Thank you, Akhilesh. Finally, on Slide 6:
+
+SatyaSetu follows international standards set by the Poynter Institute, 
+Schema.org ClaimReview, and the academic FEVER benchmark.
+
+Misinformation spreads six times faster than the truth because it targets fear and emotion.
+With SatyaSetu, truth is no longer slow, academic, or intimidating.
+It is instant, verifiable, and free for every citizen.
+
+Our code is open-source on GitHub, and our live production app is active right now.
+
+We are Team HexaDevs. Thank you, and we welcome your questions!"
+
+--------------------------------------------------------------------------------
+PART 3: YOUR ROLE IN JURY Q&A (5:00 - 7:00)
+--------------------------------------------------------------------------------
+RULE: You are the single point of contact. Catch every judge's question first!
+1. Acknowledge with authority (5 seconds):
+   "That is a critical question regarding our [system reliability / AI accuracy / data privacy]."
+2. Route strategically:
+   - AI Hallucinations/Vision? --> "Suryansh, please explain our NLI constraint."
+   - Latency/Database/FastAPI? --> "Srijan, walk the judges through our SQLite L1 cache."
+   - Sources/PIB/Fact-Checks? --> "Amit, detail our IFCN whitelist and schema validation."
+   - Adoption/WhatsApp Loop? --> "Akhilesh, explain our 1-to-256 viral sharing model."
+   - Privacy/Cost? --> Answer directly: "We use a zero-storage stateless hash architecture with zero phone numbers stored; 80% free cache hits make unit costs near zero."
+================================================================================

@@ -30,6 +30,9 @@
       </a>
       <div class="nav-actions">
         <span id="stats-cache-hits" class="badge badge-neutral" style="font-family:var(--font-mono);">SQLite WAL Cache Active</span>
+        <button id="btn-ui-lang" class="btn btn-secondary" onclick="toggleUILanguage()" aria-label="Toggle UI Language" style="font-weight:600; border-color:var(--accent-cyan); color:var(--accent-cyan);">
+          🌐 हिन्दी
+        </button>
         <button class="btn btn-secondary" onclick="toggleKeyModal()" aria-label="Configure API Keys">
           Settings
         </button>
@@ -121,6 +124,9 @@
         <button id="tab-url" class="tab-btn" role="tab" aria-selected="false" onclick="setTab('url')">
           Web Article / Media URL
         </button>
+        <button id="tab-voice" class="tab-btn" role="tab" aria-selected="false" onclick="setTab('voice')">
+          🎙️ Voice Note (आवाज़)
+        </button>
       </nav>
 
       <div id="pane-text">
@@ -144,6 +150,29 @@
 
       <div id="pane-url" style="display:none;">
         <input type="url" id="claim-url" class="input-text" placeholder="https://example.com/article or social link..." aria-label="Article URL Input">
+      </div>
+
+      <div id="pane-voice" style="display:none;">
+        <div class="upload-dropzone" style="text-align:center; padding:28px 20px;">
+          <div style="margin-bottom:14px;">
+            <button id="btn-record-voice" onclick="toggleVoiceRecording()" class="btn btn-primary" style="padding:12px 24px; font-size:0.95rem; display:inline-flex; align-items:center; gap:8px;">
+              <span id="voice-rec-dot" style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#ef4444;"></span>
+              <span id="voice-rec-label">Click to Speak / बोलकर संदेश रिकॉर्ड करें</span>
+            </button>
+          </div>
+          <p id="voice-status-msg" style="font-size:0.8rem; color:var(--text-muted); margin-bottom:16px;">
+            Uses browser Web Speech API (supports Hindi & English) to transcribe WhatsApp audio notes directly into verification claims.
+          </p>
+          <div style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:8px; font-weight:600;">Or quick-test sample WhatsApp rural voice notes:</div>
+          <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+            <button onclick="loadSampleVoiceNote('electricity')" class="btn btn-ghost" style="font-size:0.75rem; border:1px solid var(--border-subtle);">
+              ⚡ Sample: "Electricity Bill Cut Tonight"
+            </button>
+            <button onclick="loadSampleVoiceNote('recharge')" class="btn btn-ghost" style="font-size:0.75rem; border:1px solid var(--border-subtle);">
+              📱 Sample: "Free 3-Month 5G Recharge"
+            </button>
+          </div>
+        </div>
       </div>
 
       <div class="analyzer-actions">
@@ -250,9 +279,12 @@
       <article class="card detail-card" style="margin-bottom:24px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
           <h3 class="detail-card-title" style="margin-bottom:0;">WhatsApp Neutralizer Card Simulator</h3>
-          <div style="display:flex; gap:8px;">
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
             <button onclick="copyDebunk('en')" class="btn btn-secondary" style="font-size:0.78rem;">Copy English Card</button>
             <button onclick="copyDebunk('hi')" class="btn btn-secondary" style="font-size:0.78rem;">हिंदी कार्ड कॉपी करें</button>
+            <button onclick="downloadTruthCard()" class="btn btn-secondary" style="font-size:0.78rem; border-color:var(--accent-cyan); color:var(--accent-cyan);">
+              📸 Download Truth Card (PNG)
+            </button>
           </div>
         </div>
 

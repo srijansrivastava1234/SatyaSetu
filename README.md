@@ -1,6 +1,8 @@
 # SatyaSetu (सत्यसेतु)
 ### Multi-Tier Digital Misinformation Intelligence & Fact-Checking Engine
 
+[![Live Deployment](https://img.shields.io/badge/Live%20Demo-satyasetu--wtpy.onrender.com-0284c7.svg)](https://satyasetu-wtpy.onrender.com)
+[![CI Pipeline](https://github.com/srijansrivastava1234/SatyaSetu/actions/workflows/ci.yml/badge.svg)](https://github.com/srijansrivastava1234/SatyaSetu/actions)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/framework-FastAPI-009688.svg)](https://fastapi.tiangolo.com/)
 [![Database](https://img.shields.io/badge/database-SQLite%20WAL-003B57.svg)](https://www.sqlite.org/)
@@ -73,11 +75,17 @@ Evaluates linguistic vectors characteristic of viral dis- and misinformation:
 - **Sensational Typography**: Flagging excessive exclamation chains, ALL-CAPS text blocks, and fear triggers.
 - **Source Anchor Absence**: Identifies missing circular numbers, unattributed citations, and fabricated authorities.
 
-### 3. Localized Viral Counter-Messaging
+### 3. Localized Viral Counter-Messaging & Visual Truth Cards
 - **Dual-Language Debunks**: Produces human-verified, concise refutations in English and Hindi (`debunk_summary_en` and `debunk_summary_hi`).
 - **One-Click WhatsApp Forwarding**: Outputs formatted text cards designed for instant copy-pasting directly into family and community chat threads to halt virality at the peer level.
+- **1-Click Truth Card Image Generator**: Client-side HTML5 canvas synthesis generating downloadable PNG truth cards formatted for WhatsApp Status and social media debunking.
+- **Full Bilingual UI Toggle**: 1-click `EN ⇋ हिन्दी` toggle instantly localizing dashboard headlines, gauges, and checklist items.
 
-### 4. High-Performance SQLite WAL Caching & Telemetry
+### 4. Multimodal & Audio Voice Note Ingestion
+- **Messy Screenshot OCR**: Adaptive thresholding and Otsu binarization for low-resolution WhatsApp forward screenshots.
+- **WhatsApp Voice Note Ingestion**: Integrated Web Speech API audio recognition transcribing Hindi and English voice notes into structured verification queries.
+
+### 5. High-Performance SQLite WAL Caching & Telemetry
 - **SHA-256 Cache Engine**: All verified claims are indexed by cryptographic digest, providing sub-5ms response times for repeated queries.
 - **Audit Telemetry**: Comprehensive query logging tracking verdict distributions, pipeline latency, and cache hit ratios.
 

@@ -9,7 +9,10 @@ import { SourceEvidenceTable } from './components/SourceEvidenceTable';
 import { WhatsAppSimulator } from './components/WhatsAppSimulator';
 import { VerificationChecklist } from './components/VerificationChecklist';
 
-const API_BASE = "http://127.0.0.1:8000/api";
+const API_BASE = import.meta.env.VITE_API_BASE || 
+  (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? "http://127.0.0.1:8000/api"
+    : "https://satyasetu-wtpy.onrender.com/api");
 
 export default function App() {
   const [apiKey, setApiKey] = useState('');

@@ -1,0 +1,49 @@
+================================================================================
+SPEAKER 5: AKHILESH SHARMA (FRONTEND & COMMUNITY ADOPTION LEAD)
+SatyaSetu Pitch Script Card | RotaTech 2026
+================================================================================
+
+YOUR SLIDE:
+- Slide 5: Impact and Benefits (Beneficiary Personas & 1-to-256 Viral Distribution Loop)
+
+YOUR SPEAKING TIME:
+- [2:45 - 3:25] (40 seconds)
+
+YOUR INCOMING CUE:
+Listen for Amit saying: "...here is Akhilesh."
+-> Take one step forward, gesture to the 1-to-256 WhatsApp loop diagram on Slide 5!
+
+--------------------------------------------------------------------------------
+YOUR EXACT STAGE SPEECH [2:45 - 3:25]
+--------------------------------------------------------------------------------
+Mental Anchor: Who We Help -> The 1-to-256 WhatsApp Loop
+
+WHAT TO SAY:
+"Thank you, Amit. Slide 5 highlights who SatyaSetu protects across Bharat:
+- Grassroots Citizens who only communicate through WhatsApp.
+- Senior Citizens targeted by fake power-cut notices and pension phishing.
+- WhatsApp Group Admins who need neutral facts to stop heated arguments.
+
+Most importantly, look at our 1-to-256 Viral Distribution Loop:
+When one user checks a rumor on SatyaSetu, they copy our polite fact card 
+and paste it back into their 256-member WhatsApp group.
+One single check educates 255 people simultaneously!
+
+Today our Web App and Chrome Extension are live. 
+In Phase 2, we deploy a direct WhatsApp Business helpline number.
+
+YOUR OUTGOING HANDOFF CUE (Say loudly & clearly):
+'I hand back to Anshika to conclude.'"
+
+--------------------------------------------------------------------------------
+YOUR JURY Q&A DEFENSE TOPIC
+--------------------------------------------------------------------------------
+Topic: "Rural citizens don't install new apps. How will you get them to adopt SatyaSetu?"
+Your Answer:
+"Our entire adoption strategy is zero-installation and low-friction:
+1. Nobody needs to download a new heavy app. Our Web App is a lightweight PWA that works 
+   on 2G/3G networks, and our Chrome extension works in one click.
+2. Most importantly, through our 1-to-256 WhatsApp loop, 99% of beneficiaries never 
+   even visit our website! They receive the verified Hindi/English rebuttal card directly 
+   inside their existing WhatsApp family groups forwarded by someone they already trust."
+================================================================================
