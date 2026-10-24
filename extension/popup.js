@@ -8,6 +8,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   const toast = document.getElementById("toast");
 
   let debunkMessage = "";
+  const engineStatus = document.getElementById("engineStatus");
+
+  // Check connectivity
+  fetch("http://127.0.0.1:8000/api/health", { method: "GET", signal: AbortSignal.timeout(600) })
+    .then(r => {
+      if (r.ok && engineStatus) engineStatus.innerText = "Local (127.0.0.1:8000)";
+    })
+    .catch(() => {
+      if (engineStatus) engineStatus.innerText = "Production (Render Cloud)";
+    });
 
   // Load latest stored verification from storage
   const data = await chrome.storage.local.get("latestVerification");

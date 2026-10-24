@@ -62,3 +62,5 @@ check_slides_3_6.py
 inspect_runs.py
 inspect_template.py
 make_perfect_pitch_deck.py
+create_diagrammatic_pitch_deck.py
+scratch/

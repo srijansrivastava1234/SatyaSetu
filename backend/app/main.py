@@ -30,6 +30,11 @@ STATIC_HTML_PATH = os.path.join(STATIC_DIR, "index.html")
 STATIC_404_PATH = os.path.join(STATIC_DIR, "404.html")
 STATIC_FAVICON_PATH = os.path.join(STATIC_DIR, "favicon.svg")
 
+# React Frontend Dist resolution
+FRONTEND_DIST = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "frontend", "dist")
+FRONTEND_INDEX = os.path.join(FRONTEND_DIST, "index.html")
+FRONTEND_ASSETS = os.path.join(FRONTEND_DIST, "assets")
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Initialize SQLite database cache & telemetry schemas
@@ -58,6 +63,10 @@ app.add_middleware(
 if os.path.exists(STATIC_DIR):
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
+# Mount React build assets if available
+if os.path.exists(FRONTEND_ASSETS):
+    app.mount("/assets", StaticFiles(directory=FRONTEND_ASSETS), name="assets")
+
 @app.get("/favicon.ico", include_in_schema=False)
 @app.get("/favicon.svg", include_in_schema=False)
 async def serve_favicon():
@@ -68,6 +77,9 @@ async def serve_favicon():
 
 @app.get("/", response_class=HTMLResponse)
 async def serve_home():
+    if os.path.exists(FRONTEND_INDEX):
+        with open(FRONTEND_INDEX, "r", encoding="utf-8") as f:
+            return f.read()
     if os.path.exists(STATIC_HTML_PATH):
         with open(STATIC_HTML_PATH, "r", encoding="utf-8") as f:
             return f.read()

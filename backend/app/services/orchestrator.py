@@ -20,17 +20,6 @@ async def run_verification_pipeline(req: ClaimVerifyRequest) -> VerificationResp
         seed = SEED_SCENARIOS[req.scenario_id]["response"]
         return seed
 
-    # Quick matching for demo scenarios if text closely matches seed input
-    incoming_text = (req.text or "").strip().lower()
-    if "unesco" in incoming_text and ("anthem" in incoming_text or "jana gana" in incoming_text):
-        return SEED_SCENARIOS["unesco-anthem"]["response"]
-    if "500" in incoming_text and ("green" in incoming_text or "strip" in incoming_text or "gandhi" in incoming_text):
-        return SEED_SCENARIOS["rbi-500-note"]["response"]
-    if "salt" in incoming_text and ("shortage" in incoming_text or "400" in incoming_text or "300" in incoming_text or "bihar" in incoming_text or "delhi" in incoming_text):
-        return SEED_SCENARIOS["salt-shortage"]["response"]
-    if "cbse" in incoming_text and ("date" in incoming_text or "exam" in incoming_text or "circular" in incoming_text):
-        return SEED_SCENARIOS["cbse-exam-circular"]["response"]
-
     # Step 1: Multimodal OCR / Text Ingestion
     t0 = time.time()
     extracted_text, atomic_claims = await extract_claims_and_ocr(
@@ -113,12 +102,12 @@ async def run_verification_pipeline(req: ClaimVerifyRequest) -> VerificationResp
 
     if not web_citations:
         web_citations.append({
-            "title": "National Information Services & Media Index",
-            "publisher": "Press Information Bureau Fact Check",
-            "authority_badge": "Official Government Gazette",
-            "url": "https://factcheck.pib.gov.in",
-            "pub_date": "Official Records",
-            "snippet": f"Cross-referenced official notifications and gazettes for: '{search_query}'."
+            "title": "Public Information & Official Advisory Index",
+            "publisher": "National Gazette & Press Monitor",
+            "authority_badge": "Public Record Monitor",
+            "url": "https://pib.gov.in",
+            "pub_date": "No direct press match found",
+            "snippet": f"No direct corroborating gazette or certified debunk found in active indexes for: '{search_query}'."
         })
 
     step4_time = int((time.time() - t3) * 1000)

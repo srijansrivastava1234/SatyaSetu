@@ -5,7 +5,7 @@ from app.models.schemas import ClaimReviewEvidence
 
 GOOGLE_FACTCHECK_ENDPOINT = "https://factchecktools.googleapis.com/v1alpha1/claims:search"
 
-async def query_google_factcheck(query: str, api_key: Optional[str] = None) -> List[ClaimReviewEvidence]:
+async def query_google_factcheck(query: str, api_key: Optional[str] = None, language_code: Optional[str] = None) -> List[ClaimReviewEvidence]:
     key = api_key or settings.GOOGLE_FACTCHECK_API_KEY
     if not key:
         return []
@@ -13,9 +13,10 @@ async def query_google_factcheck(query: str, api_key: Optional[str] = None) -> L
     params = {
         "query": query,
         "key": key,
-        "pageSize": 5,
-        "languageCode": "en"
+        "pageSize": 5
     }
+    if language_code:
+        params["languageCode"] = language_code
 
     evidence_list: List[ClaimReviewEvidence] = []
     try:

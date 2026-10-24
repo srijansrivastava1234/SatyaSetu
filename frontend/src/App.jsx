@@ -185,6 +185,7 @@ export default function App() {
               <WhatsAppSimulator
                 shareableCard={result.shareable_card}
                 extractedText={result.extracted_text}
+                result={result}
               />
             </div>
 

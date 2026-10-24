@@ -1,3 +1,4 @@
+import re
 import sqlite3
 import hashlib
 import json
@@ -52,18 +53,26 @@ def compute_hash(text: str) -> str:
     normalized = " ".join(text.lower().strip().split())
     return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
 
+def compute_clean_hash(text: str) -> str:
+    cleaned = re.sub(r"[^\w\s]", " ", text.lower())
+    normalized = " ".join(cleaned.strip().split())
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
+
 def get_cached_verification(text: str) -> Optional[Dict[str, Any]]:
     if not text or len(text.strip()) < 5:
         return None
     h = compute_hash(text)
+    h_clean = compute_clean_hash(text)
     with get_connection() as conn:
         row = conn.execute(
-            "SELECT response_json, hits FROM verification_cache WHERE query_hash = ?", (h,)
+            "SELECT response_json, hits, query_hash FROM verification_cache WHERE query_hash = ? OR query_hash = ?",
+            (h, h_clean)
         ).fetchone()
         if row:
+            matched_hash = row["query_hash"]
             conn.execute(
                 "UPDATE verification_cache SET hits = hits + 1, updated_at = ? WHERE query_hash = ?",
-                (time.time(), h)
+                (time.time(), matched_hash)
             )
             data = json.loads(row["response_json"])
             data["cache_hit"] = True

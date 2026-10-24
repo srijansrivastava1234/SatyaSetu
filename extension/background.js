@@ -1,6 +1,24 @@
 // SatyaSetu Chrome Extension - Background Service Worker (Manifest V3)
 
-const API_ENDPOINT = "http://127.0.0.1:8000/api/verify";
+const PROD_API_ENDPOINT = "https://satyasetu-wtpy.onrender.com/api/verify";
+const LOCAL_API_ENDPOINT = "http://127.0.0.1:8000/api/verify";
+
+async function getApiEndpoint() {
+  try {
+    const store = await chrome.storage.local.get("customApiEndpoint");
+    if (store && store.customApiEndpoint) {
+      return store.customApiEndpoint;
+    }
+  } catch (e) {}
+
+  // Auto-detect: if local dev server is up, use it; otherwise use live production cloud
+  try {
+    const ping = await fetch("http://127.0.0.1:8000/api/health", { method: "GET", signal: AbortSignal.timeout(800) });
+    if (ping.ok) return LOCAL_API_ENDPOINT;
+  } catch (e) {}
+
+  return PROD_API_ENDPOINT;
+}
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
@@ -19,7 +37,8 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     chrome.action.setBadgeBackgroundColor({ color: "#f59e0b" }); // Amber
 
     try {
-      const response = await fetch(API_ENDPOINT, {
+      const endpoint = await getApiEndpoint();
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: textToVerify })
