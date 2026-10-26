@@ -107,10 +107,13 @@ SatyaSetu/
 │   │   ├── config.py        # Environment configuration
 │   │   ├── database.py      # SQLite WAL persistence & audit logger
 │   │   └── main.py          # Application entrypoint & static mount
-│   ├── tests/               # Pytest automated test suite
+│   ├── tests/               # Pytest automated test suite (API & Services)
 │   ├── test_system.py       # 20-case precision benchmark runner
 │   ├── requirements.txt     # Python production dependencies
+│   ├── requirements-dev.txt # Development & testing dependencies
 │   └── .env.example         # Environment template
+├── docs/
+│   └── API_SPECIFICATION.md # REST API contracts and schema specification
 ├── extension/               # Chrome Extension (Manifest V3)
 │   ├── manifest.json        # Extension configuration
 │   ├── background.js        # Service worker & context-menu hooks
@@ -159,6 +162,7 @@ python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 The application is accessible at:
 - **Web Interface**: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 - **Interactive OpenAPI Documentation**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+- **API Architecture & Contracts**: [docs/API_SPECIFICATION.md](docs/API_SPECIFICATION.md)
 - **OpenAPI Schema**: [http://127.0.0.1:8000/openapi.json](http://127.0.0.1:8000/openapi.json)
 
 ### 3. Load the Chrome Extension
@@ -173,11 +177,12 @@ The application is accessible at:
 ## Automated Testing & Benchmarks
 
 ### 1. Integration & Unit Test Suite (`pytest`)
-Executes unit tests validating endpoint contracts, HTTP validation, and SQLite WAL caching:
+Executes unit tests validating endpoint contracts, HTTP validation, manipulation scoring, heuristic extraction, and SQLite WAL caching:
 
 ```bash
 cd backend
-python -m pytest tests/test_api.py -v
+pip install -r requirements-dev.txt
+python -m pytest tests -v
 ```
 
 ### 2. 20-Scenario Precision Benchmark Suite
