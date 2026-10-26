@@ -56,6 +56,10 @@ Thumbs.db
 # Presentations & Scratch Scripts
 *.pptx
 *.ppt
+~$*.pptx
+~$*.ppt
+~$*.docx
+~$*.xlsx
 build_presentation.py
 check_shapes.py
 check_slides_3_6.py
@@ -64,3 +68,4 @@ inspect_template.py
 make_perfect_pitch_deck.py
 create_diagrammatic_pitch_deck.py
 scratch/
+
